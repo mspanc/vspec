@@ -29,6 +29,8 @@ namespace VSpec {
       if(suite != null) {
         ((!) suite).run();
 
+        stdout.printf("\n");
+
       } else {
         critical(@"Unable to initialize object of type $(suite_type.name())");
         assert_not_reached();

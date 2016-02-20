@@ -85,7 +85,7 @@ public class AbcSpec : VSpec.Spec {
 
 ```vala
 public static int main(string[] args) {
-  VSpec.add(typeof(AbcSuite));
+  VSpec.add(typeof(AbcSpec));
 
   return VSpec.run();
 }

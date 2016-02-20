@@ -15,7 +15,7 @@ Contributions are welcome!
 ## Spec
 
 ```vala
-public class AbcSuite : VSpec.Suite {
+public class AbcSpec : VSpec.Spec {
   public override void define() {
     describe("Abc", (_) => {
       string a = "abc";
@@ -46,7 +46,6 @@ public class AbcSuite : VSpec.Suite {
 
         _.after(() => {
           warning("AFTER1");
-
         });
 
         _.context("even if something more", (_) => {
@@ -92,9 +91,30 @@ public static int main(string[] args) {
 }
 ```
 
+
+# Compiling
+
+## Ubuntu/Debian
+
+In Ubuntu/Debian the best way is to create .deb package. You can do this in the
+following way (tested on Ubuntu 15.10):
+
+* Install devscripts & equivs: `sudo apt-get install devscripts equivs`
+* Install build dependencies: `sudo mk-build-deps -i -r debian/control`
+* Build the package `sudo debuild`
+
+## Other systems
+
+Ensure that automake, C compiler, valac, GLib development library are installed.
+
+* Run `./configure`
+* Run `make`
+* Run `sudo make install`
+
+
 # Using in your project
 
-## Using with autotools
+## Using with the autotools
 
 In order to satisfy compilation dependencies, you should add:
 
@@ -105,6 +125,7 @@ In order to satisfy compilation dependencies, you should add:
 Then just create standard automake TESTS program, and launch runner like in the
 example above.
 
+
 # Feature status
 
 * Basic context nesting - DONE
@@ -114,14 +135,18 @@ example above.
 * Matchers - NOT STARTED
 * Shared examples - NOT STARTED
 * Different formats of console output - NOT STARTED
+* Filtering specs in the runner - NOT STARTED
+* Verbose output of the failed specs - NOT STARTED
 
 # License
 
 LGPL3
 
+
 # Support & bug reporting
 
 Please use [GitHub issues](https://github.com/mspanc/vspec/issues).
+
 
 # Author
 

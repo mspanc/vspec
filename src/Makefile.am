@@ -13,7 +13,7 @@ lib_LTLIBRARIES = libvspec-1.0.la
 libvspec_1_0_la_SOURCES = \
   vspec.vala \
   vspec/context.vala \
-  vspec/suite.vala
+  vspec/spec.vala
 
 libvspec_1_0_la_VALAFLAGS = --library libvspec-1.0 --vapi libvspec-1.0.vapi -H libvspec.h --pkg=glib-2.0 --pkg=gobject-2.0 --enable-experimental --enable-experimental-non-null
 libvspec_1_0_la_CFLAGS = $(LIBVSPEC_CFLAGS)

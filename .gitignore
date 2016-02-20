@@ -22,3 +22,6 @@ autom4te.cache
 /debian/tmp
 *.dh-orig
 /libtool
+/src/libvspec-1.0.vapi
+/src/libvspec-1.0.pc
+/src/libvspec.h

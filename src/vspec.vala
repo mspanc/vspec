@@ -3,11 +3,11 @@ namespace VSpec {
   public static void add(Type suite_type) {
     initialize_suites();
 
-    if(suite_type.is_a(typeof(Suite))) {
+    if(suite_type.is_a(typeof(Spec))) {
       ((!) suites).add(suite_type);
 
     } else {
-      critical(@"Unable to add suite of type $(suite_type.name()): it is not derived from VSpec.Suite class");
+      critical(@"Unable to add suite of type $(suite_type.name()): it is not derived from VSpec.Spec class");
       assert_not_reached();
     }
   }
@@ -24,7 +24,7 @@ namespace VSpec {
     initialize_suites();
 
     ((!) suites).foreach((suite_type) => {
-      Suite? suite = Object.new(suite_type) as Suite;
+      Spec? suite = Object.new(suite_type) as Spec;
 
       if(suite != null) {
         ((!) suite).run();

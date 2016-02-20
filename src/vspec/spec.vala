@@ -1,5 +1,5 @@
 namespace VSpec {
-  public abstract class Suite : Object {
+  public abstract class Spec : Object {
     private Context root_context = new Context(null, null);
 
     public abstract void define();

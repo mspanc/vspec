@@ -89,6 +89,7 @@ public static int main(string[] args) {
   VSpec.add(typeof(AbcSuite));
 
   return VSpec.run();
+}
 ```
 
 # Using in your project

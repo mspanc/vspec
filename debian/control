@@ -1,5 +1,5 @@
 Source: libvspec-1.0
-Section: lib
+Section: devel
 Priority: optional
 Maintainer: Marcin Lewandowski <marcin@saepia.net>
 Build-Depends:
@@ -10,7 +10,7 @@ Build-Depends:
  libtool,
  libglib2.0-dev (>= 2.42.1),
  valac (>= 0.26.1)
-Standards-Version: 3.9.4
+Standards-Version: 3.9.6
 Homepage: https://github.com/mspanc/vspec
 
 Package: libvspec-1.0-dbg
@@ -21,7 +21,8 @@ Depends:
  libvspec-1.0-0 (= ${binary:Version}),
  ${misc:Depends}
 Description: Debugging symbols for RSpec-like testing framework for Vala language.
- This package contains debugging symbols for RSpec-like testing framework for Vala language.
+ This package contains debugging symbols for RSpec-like testing framework for
+ the Vala language.
 
 Package: libvspec-1.0-dev
 Architecture: any
@@ -31,7 +32,8 @@ Depends:
  libvspec-1.0-0 (= ${binary:Version}),
  ${misc:Depends}
 Description: Development files for RSpec-like testing framework for Vala language.
- This package contains development files for RSpec-like testing framework for Vala language.
+ This package contains development files (C headers, VAPI files) for RSpec-like
+ testing framework for the Vala language.
 
 Package: libvspec-1.0-0
 Architecture: any
@@ -40,4 +42,4 @@ Depends: ${shlibs:Depends}, ${misc:Depends},
  libglib2.0-0 (>= 2.42.1)
 Suggests: pulseaudio
 Description: RSpec-like testing framework for Vala language.
- This library provides framwork for RSpec-style known from Ruby but for Vala.
+ This library provides framework for RSpec-style known from Ruby but for Vala.

@@ -9,5 +9,5 @@ Name: libvspec-1.0
 Description: RSpec-like testing framework for Vala language.
 Version: @VERSION@
 Requires: @pkg_modules@
-Libs: -L${libdir} -vspec-1.0
+Libs: -L${libdir} -lvspec-1.0
 Cflags: -I${includedir}

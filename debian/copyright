@@ -5,8 +5,8 @@ Source: https://github.com/mspanc/vspec
 
 Files: *
 Copyright: 2014-2015 Marcin Lewandowski <marcin@saepia.net>
-License: LGPL
+License: LGPL-3.0
 
 Files: debian/*
 Copyright: 2014-2015 Marcin Lewandowski <marcin@saepia.net>
-License: LGPL
+License: LGPL-3.0

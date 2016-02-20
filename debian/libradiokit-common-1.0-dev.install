@@ -1,0 +1,5 @@
+usr/include
+usr/lib/*/libvspec-1.0.a
+usr/lib/*/libvspec-1.0.so
+usr/lib/*/pkgconfig
+usr/share/vala/vapi

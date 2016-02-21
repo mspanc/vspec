@@ -130,8 +130,6 @@ namespace VSpec {
         ((!) suite).run((!) scope);
         ((!) scope).decrease_depth();
 
-        Report.print_report();
-
       } else {
         critical(@"Unable to initialize object of type $(suite_type.name())");
         assert_not_reached();
@@ -141,6 +139,8 @@ namespace VSpec {
     if(after_all_func != null) {
       after_all_func();
     }
+
+    Report.print_report();
 
     if(Report.errors_count != 0) {
       return 1;

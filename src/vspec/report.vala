@@ -37,12 +37,12 @@ namespace VSpec {
     }
 
 
-    public static void log_error(string name, Scope scope, string reason, string message) {
+    public static void log_error(string name, Scope scope, string extra) {
       initialize_errors();
       errors_count++;
       print_dot(COLOR_CODE_ERROR);
 
-      log_append((!) errors, name, scope, @"$(reason): $(message)");
+      log_append((!) errors, name, scope, extra);
     }
 
 

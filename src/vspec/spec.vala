@@ -45,11 +45,25 @@ namespace VSpec {
       Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Entering: describe $name");
 
       ((!) this.scope).increase_depth(name, false);
-      cb();
+      try {
+        cb();
+      } catch(LetError e) {
+        Report.log_error(name, (!) this.scope, "@LetError in describe(): $(e.message)");
+      }
 
-      ((!) this.scope).call_before_each_funcs();
+      try {
+        ((!) this.scope).call_before_each_funcs();
+      } catch(LetError e) {
+        Report.log_error(name, (!) this.scope, @"LetError in before_each(): $(e.message)");
+      }
+
       ((!) this.scope).call_case_funcs();
-      ((!) this.scope).call_after_each_funcs();
+
+      try {
+        ((!) this.scope).call_after_each_funcs();
+      } catch(LetError e) {
+        Report.log_error(name, (!) this.scope, @"LetError in after_each(): $(e.message)");
+      }
 
       ((!) this.scope).decrease_depth();
 
@@ -61,11 +75,25 @@ namespace VSpec {
       Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Entering: context $name");
 
       ((!) this.scope).increase_depth(name, false);
-      cb();
+      try {
+        cb();
+      } catch(LetError e) {
+        Report.log_error(name, (!) this.scope, "@LetError in context(): $(e.message)");
+      }
 
-      ((!) this.scope).call_before_each_funcs();
+      try {
+        ((!) this.scope).call_before_each_funcs();
+      } catch(LetError e) {
+        Report.log_error(name, (!) this.scope, @"LetError in before_each(): $(e.message)");
+      }
+
       ((!) this.scope).call_case_funcs();
-      ((!) this.scope).call_after_each_funcs();
+
+      try {
+        ((!) this.scope).call_after_each_funcs();
+      } catch(LetError e) {
+        Report.log_error(name, (!) this.scope, @"LetError in after_each(): $(e.message)");
+      }
 
       ((!) this.scope).decrease_depth();
 
@@ -86,11 +114,13 @@ namespace VSpec {
       Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Entering: xdescribe $name");
 
       ((!) this.scope).increase_depth(name, true);
-      cb();
+      try {
+        cb();
+      } catch(LetError e) {
+        Report.log_error(name, (!) this.scope, "@LetError in xdescribe(): $(e.message)");
+      }
 
-      ((!) this.scope).call_before_each_funcs();
       ((!) this.scope).call_case_funcs();
-      ((!) this.scope).call_after_each_funcs();
 
       ((!) this.scope).decrease_depth();
 
@@ -102,11 +132,13 @@ namespace VSpec {
       Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Entering: xcontext $name");
 
       ((!) this.scope).increase_depth(name, true);
-      cb();
+      try {
+        cb();
+      } catch(LetError e) {
+        Report.log_error(name, (!) this.scope, "@LetError in xcontext(): $(e.message)");
+      }
 
-      ((!) this.scope).call_before_each_funcs();
       ((!) this.scope).call_case_funcs();
-      ((!) this.scope).call_after_each_funcs();
 
       ((!) this.scope).decrease_depth();
 

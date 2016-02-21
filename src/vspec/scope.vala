@@ -60,7 +60,7 @@ namespace VSpec {
         this.let_funcs[i].foreach((func_ref) => {
           if(func_ref.name == name) {
             Logger.debug(@"[VSpec.Spec $(get_depth())] Finding: let $(name) found ($(Logger.pointer((void *)func_ref.cb_ref)))");
-            result = func_ref.cb_ref;
+            result = (owned) func_ref.cb_ref;
           }
         });
       }
@@ -69,7 +69,7 @@ namespace VSpec {
         throw new LetError.NOT_FOUND(@"There's no such lazy-load variable as \"$name\", ensure that let(\"$name\", () => { ... }) was called in this or any of parent contexts.");
 
       } else {
-        return (!) result;
+        return (!) (owned) result;
       }
     }
 
@@ -93,25 +93,48 @@ namespace VSpec {
     }
 
 
-    public void call_before_each_funcs() {
+    public void call_before_each_funcs() throws LetError {
       Logger.debug(@"[VSpec.Spec $(get_depth())] Calling: before_each");
+      LetError? error = null;
+
       this.before_each_funcs.foreach((func_list) => {
         func_list.foreach((func_ref) => {
           Logger.debug(@"[VSpec.Spec $(get_depth())] Calling: before_each ($(Logger.pointer((void *)func_ref.cb_ref)))");
-          func_ref.cb_ref();
+
+          try {
+            func_ref.cb_ref();
+
+          } catch(LetError e) {
+            error = e;
+          }
         });
       });
+
+      if(error != null) {
+        throw error;
+      }
     }
 
 
-    public void call_after_each_funcs() {
+    public void call_after_each_funcs() throws LetError {
       Logger.debug(@"[VSpec.Spec $(get_depth())] Calling: after_each");
+      LetError? error = null;
+
       this.after_each_funcs.foreach((func_list) => {
         func_list.foreach((func_ref) => {
           Logger.debug(@"[VSpec.Spec $(get_depth())] Calling: after_each ($(Logger.pointer((void *)func_ref.cb_ref)))");
-          func_ref.cb_ref();
+          try {
+            func_ref.cb_ref();
+
+          } catch(LetError e) {
+            error = e;
+          }
         });
       });
+
+      if(error != null) {
+        throw error;
+      }
     }
 
 
@@ -131,11 +154,11 @@ namespace VSpec {
 
           } catch(LetError e) {
             Logger.debug(@"[VSpec.Spec $(get_depth())] Call Error (LetError): it $(func_ref.name) ($(Logger.pointer((void *)func_ref.cb_ref)))");
-            Report.log_error(func_ref.name, (!) this, @"LetError", e.message);
+            Report.log_error(func_ref.name, (!) this, @"LetError in it(): $(e.message)");
 
           } catch(Error e) {
             Logger.debug(@"[VSpec.Spec $(get_depth())] Call Error (other Error): it $(func_ref.name) ($(Logger.pointer((void *)func_ref.cb_ref)))");
-            Report.log_error(func_ref.name, (!) this, @"Error $(e.domain.to_string()) $(e.code)", e.message);
+            Report.log_error(func_ref.name, (!) this, @"Error $(e.domain.to_string()) $(e.code): $(e.message)");
           }
         }
       });

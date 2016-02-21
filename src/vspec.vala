@@ -28,9 +28,9 @@ namespace VSpec {
 
   public static bool verbose = false;
 
-  public delegate void AfterFunc();
-  public delegate void BeforeFunc();
-  public delegate void ScopeFunc();
+  public delegate void AfterFunc() throws LetError;
+  public delegate void BeforeFunc() throws LetError;
+  public delegate void ScopeFunc() throws LetError;
   public delegate void CaseFunc() throws Error;
   public delegate Value LetFunc();
 
@@ -124,7 +124,12 @@ namespace VSpec {
     initialize_output();
 
     if(before_all_func != null) {
-      before_all_func();
+      try {
+        before_all_func();
+
+      } catch(LetError e) {
+        Report.log_error("(root)", (!) scope, @"LetError in VSpec.before_all(): $(e.message)");
+      }
     }
 
     ((!) suites).foreach((suite_type) => {
@@ -142,7 +147,12 @@ namespace VSpec {
     });
 
     if(after_all_func != null) {
-      after_all_func();
+      try {
+        after_all_func();
+
+      } catch(LetError e) {
+        Report.log_error("(root)", (!) scope, @"LetError in VSpec.after_all(): $(e.message)");
+      }
     }
 
     Report.print_report();

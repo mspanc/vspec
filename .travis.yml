@@ -1,5 +1,13 @@
+os:
+  - linux
 language: c
+before_install:
+  - sudo apt-get update
+install:
+  - sudo apt-get install devscripts equivs -y
+  - yes | sudo mk-build-deps -i -r debian/control
+script:
+  - yes | debuild -uc -us
 compiler:
   - clang
   - gcc
-  

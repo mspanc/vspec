@@ -18,18 +18,77 @@
 
 namespace VSpec {
   public abstract class Spec : Object {
-    private Context root_context = new Context(null, null);
-
     public abstract void define();
 
+    private Scope?  scope = null;
 
-    public void run() {
+
+    public void run(Scope scope) {
+      this.scope = scope;
       define();
     }
 
 
-    protected void describe(string name, Context.ContextNestedFunc nested_cb) {
-      this.root_context.context(name, nested_cb);
+    protected void before_each(owned BeforeFunc cb)
+    requires(this.scope != null) {
+      ((!) this.scope).push_before_each_func((owned) cb);
+    }
+
+
+    protected void after_each(owned AfterFunc cb)
+    requires(this.scope != null) {
+      ((!) this.scope).push_after_each_func((owned) cb);
+    }
+
+
+    protected void describe(string name, owned ScopeFunc cb) {
+      debug(@"[VSpec.Spec] Entering: describe $name");
+
+      ((!) this.scope).increase_depth();
+      cb();
+
+      ((!) this.scope).call_before_each_funcs();
+      ((!) this.scope).call_case_funcs();
+      ((!) this.scope).call_after_each_funcs();
+
+      ((!) this.scope).decrease_depth();
+
+      debug(@"[VSpec.Spec] Exiting: describe $name");
+    }
+
+
+    protected void context(string name, owned ScopeFunc cb) {
+      debug(@"[VSpec.Spec] Entering: context $name");
+
+      ((!) this.scope).increase_depth();
+      cb();
+
+      ((!) this.scope).call_before_each_funcs();
+      ((!) this.scope).call_case_funcs();
+      ((!) this.scope).call_after_each_funcs();
+
+      ((!) this.scope).decrease_depth();
+
+      debug(@"[VSpec.Spec] Exiting: context $name");
+    }
+
+
+    protected void it(string name, owned CaseFunc cb) {
+      debug(@"[VSpec.Spec] Entering: it $name");
+
+      ((!) this.scope).push_case_func(name, (owned) cb);
+
+      debug(@"[VSpec.Spec] Exiting: it $name");
+    }
+
+
+    protected void xcontext(string name, owned ScopeFunc cb) {
+      /*this.scope = this.scope.push_context(name, (owned) cb);*/
+    }
+
+
+    protected void xit(string name, owned CaseFunc cb) {
+      /*this.scope = this.scope.push_context(name, (owned) cb);*/
     }
   }
 }

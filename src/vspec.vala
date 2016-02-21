@@ -17,20 +17,45 @@
  */
 
 namespace VSpec {
-  private static GenericArray<Type>? suites          = null;
-  private static BeforeAllFunc?      before_all_func = null;
-  private static AfterAllFunc?       after_all_func  = null;
+  private static GenericArray<Type>? suites           = null;
+  private static BeforeFunc?         before_all_func  = null;
+  private static AfterFunc?          after_all_func   = null;
+  private static Scope?              scope            = null;
+
+  public static bool verbose = true; // Add commandline option
+
+  public delegate void AfterFunc();
+  public delegate void BeforeFunc();
+  public delegate void ScopeFunc();
+  public delegate void CaseFunc() throws Error;
 
 
-  public delegate void BeforeAllFunc();
-  public static void before_all(BeforeAllFunc cb) {
-    before_all_func = cb;
+  public static void before_all(owned BeforeFunc cb) {
+    before_all_func = (owned) cb;
   }
 
 
-  public delegate void AfterAllFunc();
-  public static void after_all(AfterAllFunc cb) {
-    after_all_func = cb;
+  public static void after_all(owned AfterFunc cb) {
+    after_all_func = (owned) cb;
+  }
+
+
+  public static void before_each(owned BeforeFunc cb) {
+    initialize_scope();
+    ((!) scope).push_before_each_func((owned) cb);
+  }
+
+
+  public static void after_each(owned AfterFunc cb) {
+    initialize_scope();
+    ((!) scope).push_after_each_func((owned) cb);
+  }
+
+
+  private static void initialize_scope() {
+    if(scope == null) {
+      scope = new Scope();
+    }
   }
 
 
@@ -54,8 +79,44 @@ namespace VSpec {
   }
 
 
+  private static void initialize_output() {
+    Log.set_handler(null, LogLevelFlags.LEVEL_CRITICAL | LogLevelFlags.LEVEL_WARNING | LogLevelFlags.LEVEL_MESSAGE | LogLevelFlags.LEVEL_INFO | LogLevelFlags.LEVEL_DEBUG | LogLevelFlags.FLAG_FATAL | LogLevelFlags.FLAG_RECURSION, on_log_message);
+  }
+
+
+  private static void on_log_message(string? log_domain, LogLevelFlags log_level, string message) {
+    if(verbose) {
+      string level_string = "????";
+
+      if(LogLevelFlags.LEVEL_ERROR in log_level) {
+        level_string = "ERRO";
+
+      } else if (LogLevelFlags.LEVEL_CRITICAL in log_level) {
+        level_string = "CRIT";
+
+      } else if (LogLevelFlags.LEVEL_WARNING in log_level) {
+        level_string = "WARN";
+
+      } else if (LogLevelFlags.LEVEL_MESSAGE in log_level) {
+        level_string = "MESG";
+
+      } else if (LogLevelFlags.LEVEL_INFO in log_level) {
+        level_string = "INFO";
+
+      } else if (LogLevelFlags.LEVEL_DEBUG in log_level) {
+        level_string = "DEBG";
+      }
+
+      stderr.printf("%s\n", message);
+      stderr.flush();
+    }
+  }
+
+
   public static int run() {
     initialize_suites();
+    initialize_scope();
+    initialize_output();
 
     if(before_all_func != null) {
       before_all_func();
@@ -65,7 +126,7 @@ namespace VSpec {
       Spec? suite = Object.new(suite_type) as Spec;
 
       if(suite != null) {
-        ((!) suite).run();
+        ((!) suite).run((!) scope);
 
         stdout.printf("\n");
 

@@ -1,5 +1,7 @@
 # VSpec
 
+![Build Status](https://img.shields.io/shippable/56ca25001895ca4474772627.svg "Build Status")
+
 ## RSpec-like testing framework for the Vala language
 
 This project aims at creating RSpec-like testing framework for the

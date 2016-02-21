@@ -1,0 +1,18 @@
+env:
+  global:
+    - DEBIAN_FRONTEND=noninteractive
+    - LC_ALL=C
+
+before_install:
+  - apt-get install -y devscripts ubuntu-dev-tools equivs gdebi-core
+
+before_script:
+  - mk-build-deps -r debian/control
+  - gdebi --non-interactive --quiet *.deb
+  - rm *.deb
+
+script:
+  - debuild -i -us -uc -b
+  - gdebi --non-interactive --quiet ../*-0_*.deb
+  - gdebi --non-interactive --quiet ../*-dev_*.deb
+  - gdebi --non-interactive --quiet ../*-dbg_*.deb

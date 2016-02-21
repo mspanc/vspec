@@ -87,6 +87,15 @@ public class AbcSpec : VSpec.Spec {
 public static int main(string[] args) {
   VSpec.add(typeof(AbcSpec));
 
+  VSpec.before_all(() => {
+    // Do something before running all specs
+  });
+
+  VSpec.after_all(() => {
+    // Do something after running all specs
+  });
+
+  
   return VSpec.run();
 }
 ```

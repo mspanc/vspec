@@ -17,7 +17,21 @@
  */
 
 namespace VSpec {
-  private static GenericArray<Type>? suites = null;
+  private static GenericArray<Type>? suites          = null;
+  private static BeforeAllFunc?      before_all_func = null;
+  private static AfterAllFunc?       after_all_func  = null;
+
+
+  public delegate void BeforeAllFunc();
+  public static void before_all(BeforeAllFunc cb) {
+    before_all_func = cb;
+  }
+
+
+  public delegate void AfterAllFunc();
+  public static void after_all(AfterAllFunc cb) {
+    after_all_func = cb;
+  }
 
 
   public static void add(Type suite_type) {
@@ -43,6 +57,10 @@ namespace VSpec {
   public static int run() {
     initialize_suites();
 
+    if(before_all_func != null) {
+      before_all_func();
+    }
+
     ((!) suites).foreach((suite_type) => {
       Spec? suite = Object.new(suite_type) as Spec;
 
@@ -56,6 +74,10 @@ namespace VSpec {
         assert_not_reached();
       }
     });
+
+    if(after_all_func != null) {
+      after_all_func();
+    }
 
     return 0; // TODO
   }

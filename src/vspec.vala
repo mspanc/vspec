@@ -22,7 +22,7 @@ namespace VSpec {
   private static AfterFunc?          after_all_func   = null;
   private static Scope?              scope            = null;
 
-  public static bool verbose = true; // Add commandline option
+  public static bool verbose = false;
 
   public delegate void AfterFunc();
   public delegate void BeforeFunc();
@@ -126,9 +126,11 @@ namespace VSpec {
       Spec? suite = Object.new(suite_type) as Spec;
 
       if(suite != null) {
+        ((!) scope).increase_depth(suite_type.name(), false);
         ((!) suite).run((!) scope);
+        ((!) scope).decrease_depth();
 
-        stdout.printf("\n");
+        Report.print_report();
 
       } else {
         critical(@"Unable to initialize object of type $(suite_type.name())");
@@ -140,6 +142,11 @@ namespace VSpec {
       after_all_func();
     }
 
-    return 0; // TODO
+    if(Report.errors_count != 0) {
+      return 1;
+
+    } else {
+      return 0;
+    }
   }
 }

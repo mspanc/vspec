@@ -1,7 +1,5 @@
 # VSpec
 
-[![Build Status](https://travis-ci.org/mspanc/vspec.svg?branch=master)](https://travis-ci.org/mspanc/vspec)
-
 ## RSpec-like testing framework for the Vala language
 
 This project aims at creating RSpec-like testing framework for the
@@ -21,69 +19,53 @@ Contributions are welcome!
 ```vala
 public class AbcSpec : VSpec.Spec {
   public override void define() {
-    describe("Abc", (_) => {
-      string a = "abc";
-      string b = "123";
+    before_each(() => {
+      // Before each in that spec
+    });
 
-      _.before(() => {
-        warning("BEFORE0");
-      });
+    after_each(() => {
+      // After each in that spec
+    });
 
-      _.after(() => {
-        warning("AFTER0");
-      });
+    // Equivalent to let! in RSpec
+    var xyz = 123;
+    var abc1 = "abc";
 
-      _.xcontext("disabled context", (_) => {
-        var q = 123;
+    describe(".something", () => {
+      var abc2 = "def";
+      context("if something happened", () => {
+        before_each(() => {
+          // Before each in that context
+        });
 
-        _.before(() => {
-          warning(@"BEFORE1 $q");
+        after_each(() => {
+          // After each in that context
+        });
+
+        xit("should do whatever", () => {
+          // I am pending spec
+        });
+
+        it("should print variables ", () => {
+          stdout.printf(@"$abc1 $abc2 $xyz\n");
         });
       });
 
-      _.context("if something", (_) => {
-        var c = 123;
+      it("should throw an arror and keep runner running", () => {
+        throw new ThreadError.AGAIN("Abc");
+      });
 
-        _.before(() => {
-          warning("BEFORE1");
-        });
-
-        _.after(() => {
-          warning("AFTER1");
-        });
-
-        _.context("even if something more", (_) => {
-          _.before(() => {
-            warning("BEFORE2");
-          });
-
-          _.after(() => {
-            warning("AFTER2");
-          });
-
-          _.it("should do something", () => {
-            warning(@":)1 $a $b");
-          });
-
-          _.xit("should do something2", () => {
-            warning(@":)2 $a $b");
-          });
-
-          _.context("deep!", (_) => {
-            _.it("deep task", () => {
-              warning(@":))) $a $b $c");
-            });
-          });
-        });
-
-        _.it("shallow task", () => {
-          warning(@":))]]] $a $b");
+      // Pending context
+      xcontext("if something happened", () => {
+        it("should print variables ", () => {
+          // I won't be called as parent context is pending
         });
       });
     });
   }
 }
 ```
+
 
 ## Runner
 
@@ -99,10 +81,30 @@ public static int main(string[] args) {
     // Do something after running all specs
   });
 
+  VSpec.before_each(() => {
+    // Do something before each spec
+  });
+
+  VSpec.after_each(() => {
+    // Do something after each spec
+  });
+
+
+  VSpec.verbose = true; // Print output of all GLib logging functions
 
   return VSpec.run();
 }
 ```
+
+## Output
+
+![Report](/docs/report.png?raw=true "Report")
+
+
+# Debugging
+
+If you set VSPEC_DEBUG environment variable, VSpec will output additional
+messages that can be useful while debugging.
 
 
 # Compiling
@@ -143,11 +145,11 @@ example above.
 
 * Basic context nesting - DONE
 * Defining variables within context (equivalent to `let!`) - DONE
+* Reporting to the console output - DONE
 * Defining lazy-loaded variables within context (equivalent to `let`) - NOT STARTED
 * `expect` syntax - NOT STARTED
 * Matchers - NOT STARTED
 * Shared examples - NOT STARTED
-* Different formats of console output - NOT STARTED
 * Filtering specs in the runner - NOT STARTED
 * Verbose output of the failed specs - NOT STARTED
 

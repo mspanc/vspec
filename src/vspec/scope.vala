@@ -18,121 +18,157 @@
 
 namespace VSpec {
   public class Scope : Object {
-    public uint depth { get; private set; default = 0; }
+    private GenericArray<GenericArray<BeforeFuncRef>> before_each_funcs = new GenericArray<GenericArray<BeforeFuncRef>>();
+    private GenericArray<GenericArray<AfterFuncRef>>  after_each_funcs  = new GenericArray<GenericArray<AfterFuncRef>>();
+    private GenericArray<GenericArray<CaseFuncRef>>   case_funcs        = new GenericArray<GenericArray<CaseFuncRef>>();
+    private GenericArray<string>                      names             = new GenericArray<string>();
+    private GenericArray<bool>                        pendings          = new GenericArray<bool>();
 
-    private List<BeforeFuncRef> before_each_funcs = new List<BeforeFuncRef>();
-    private List<AfterFuncRef>  after_each_funcs  = new List<AfterFuncRef>();
-    private List<CaseFuncRef>   case_funcs        = new List<CaseFuncRef>();
+
+    construct {
+      this.before_each_funcs.add(new GenericArray<BeforeFuncRef>());
+      this.after_each_funcs.add(new GenericArray<AfterFuncRef>());
+      this.case_funcs.add(new GenericArray<CaseFuncRef>());
+    }
 
 
     public void push_before_each_func(owned BeforeFunc cb) {
-      this.before_each_funcs.append(new BeforeFuncRef(this.depth, (owned) cb));
+      Logger.debug(@"[VSpec.Spec $(get_depth())] Pushing: before_each ($(Logger.pointer((void *)cb)))");
+      this.before_each_funcs[this.before_each_funcs.length -1].add(new BeforeFuncRef((owned) cb));
     }
 
 
     public void push_after_each_func(owned AfterFunc cb) {
-      this.after_each_funcs.prepend(new AfterFuncRef(this.depth, (owned) cb));
+      Logger.debug(@"[VSpec.Spec $(get_depth())] Pushing: after_each ($(Logger.pointer((void *)cb)))");
+      this.after_each_funcs[this.after_each_funcs.length -1].insert(0, new AfterFuncRef((owned) cb));
     }
 
 
-    public void push_case_func(string name, owned CaseFunc cb) {
-      this.case_funcs.append(new CaseFuncRef(name, this.depth, (owned) cb));
+    public void push_case_func(string name, owned CaseFunc cb, bool pending) {
+      Logger.debug(@"[VSpec.Spec $(get_depth())] Pushing: it $(name) ($(Logger.pointer((void *)cb))), pending = $pending");
+
+      bool pending_real = false;
+      if(pending == true) {
+        pending_real = true;
+
+      } else {
+        this.pendings.foreach((depth_pending) => {
+          if(depth_pending) {
+            pending_real = true;
+          }
+        });
+      }
+
+      this.case_funcs[this.case_funcs.length -1].add(new CaseFuncRef(name, (owned) cb, pending_real));
     }
 
 
     public void call_before_each_funcs() {
-      foreach(var func_ref in this.before_each_funcs) {
-        if(func_ref.depth <= this.depth) {
-          func_ref.call();
-        }
-      }
+      Logger.debug(@"[VSpec.Spec $(get_depth())] Calling: before_each");
+      this.before_each_funcs.foreach((func_list) => {
+        func_list.foreach((func_ref) => {
+          Logger.debug(@"[VSpec.Spec $(get_depth())] Calling: before_each ($(Logger.pointer((void *)func_ref.cb_ref)))");
+          func_ref.cb_ref();
+        });
+      });
     }
 
 
     public void call_after_each_funcs() {
-      foreach(var func_ref in this.after_each_funcs) {
-        if(func_ref.depth <= this.depth) {
-          func_ref.call();
-        }
-      }
+      Logger.debug(@"[VSpec.Spec $(get_depth())] Calling: after_each");
+      this.after_each_funcs.foreach((func_list) => {
+        func_list.foreach((func_ref) => {
+          Logger.debug(@"[VSpec.Spec $(get_depth())] Calling: after_each ($(Logger.pointer((void *)func_ref.cb_ref)))");
+          func_ref.cb_ref();
+        });
+      });
     }
 
 
     public void call_case_funcs() {
-      foreach(var func_ref in this.case_funcs) {
-        if(func_ref.depth <= this.depth) {
+      Logger.debug(@"[VSpec.Spec $(get_depth())] Calling: case");
+      this.case_funcs[this.case_funcs.length -1].foreach((func_ref) => {
+        if(func_ref.pending) {
+          Logger.debug(@"[VSpec.Spec $(get_depth())] Call pending: it $(func_ref.name) ($(Logger.pointer((void *)func_ref.cb_ref)))");
+          Report.log_pending(func_ref.name, (!) this);
+
+        } else {
           try {
-            debug(@"[VSpec.Spec] Calling: it $(func_ref.name)");
-            func_ref.call();
-            debug(@"[VSpec.Spec] Call OK: it $(func_ref.name)");
-            Report.log_ok((!) this);
+            Logger.debug(@"[VSpec.Spec $(get_depth())] Calling: it $(func_ref.name) ($(Logger.pointer((void *)func_ref.cb_ref)))");
+            func_ref.cb_ref();
+            Logger.debug(@"[VSpec.Spec $(get_depth())] Call OK: it $(func_ref.name) ($(Logger.pointer((void *)func_ref.cb_ref)))");
+            Report.log_ok(func_ref.name, (!) this);
 
           } catch(Error e) {
-            debug(@"[VSpec.Spec] Call error: it $(func_ref.name)");
-            Report.log_error((!) this); // TODO add detailed information
+            Logger.debug(@"[VSpec.Spec $(get_depth())] Call error: it $(func_ref.name) ($(Logger.pointer((void *)func_ref.cb_ref)))");
+            Report.log_error(func_ref.name, (!) this, @"Error $(e.domain.to_string()) $(e.code)", e.message);
           }
         }
-      }
+      });
     }
 
 
-    public void increase_depth() {
-      this.depth++;
+    public void increase_depth(string name, bool pending) {
+      Logger.debug(@"[VSpec.Spec $(get_depth())] Increasing depth, pending = $pending");
+      this.before_each_funcs.add(new GenericArray<BeforeFuncRef>());
+      this.after_each_funcs.add(new GenericArray<AfterFuncRef>());
+      this.case_funcs.add(new GenericArray<CaseFuncRef>());
+      this.names.add(name);
+      this.pendings.add(pending);
     }
 
 
     public void decrease_depth() {
-      // TODO remove obsolete before/after callbacks
-      this.depth--;
+      Logger.debug(@"[VSpec.Spec $(get_depth())] Decreasing depth");
+      this.before_each_funcs.remove_index(this.before_each_funcs.length -1);
+      this.after_each_funcs.remove_index(this.after_each_funcs.length -1);
+      this.case_funcs.remove_index(this.case_funcs.length -1);
+      if(this.pendings.length != 0) {
+        this.pendings.remove_index(this.pendings.length -1);
+      }
+      if(this.names.length != 0) {
+        this.names.remove_index(this.names.length -1);
+      }
+    }
+
+
+    public uint get_depth() {
+      return this.before_each_funcs.length -1;
+    }
+
+
+    public GenericArray<string> get_names() {
+      return this.names;
     }
 
 
     private class BeforeFuncRef : Object {
-      public uint depth { get; construct set; }
-      private BeforeFunc cb_ref;
+      public BeforeFunc cb_ref;
 
-      public BeforeFuncRef(uint depth, owned BeforeFunc cb) {
-        this.depth = depth;
+      public BeforeFuncRef(owned BeforeFunc cb) {
         this.cb_ref = (owned) cb;
-      }
-
-
-      public void call() {
-        this.cb_ref();
       }
     }
 
 
     private class AfterFuncRef : Object {
-      public uint depth { get; construct set; }
-      private AfterFunc cb_ref;
+      public AfterFunc cb_ref;
 
-      public AfterFuncRef(uint depth, owned AfterFunc cb) {
-        this.depth = depth;
+      public AfterFuncRef(owned AfterFunc cb) {
         this.cb_ref = (owned) cb;
-      }
-
-
-      public void call() {
-        this.cb_ref();
       }
     }
 
 
     private class CaseFuncRef : Object {
-      public string name { get; construct set; }
-      public uint depth { get; construct set; }
-      private CaseFunc cb_ref;
+      public string name    { get; construct set; }
+      public bool   pending { get; construct set; }
+      public CaseFunc cb_ref;
 
-      public CaseFuncRef(string name, uint depth, owned CaseFunc cb) {
+      public CaseFuncRef(string name, owned CaseFunc cb, bool pending) {
         this.name = name;
-        this.depth = depth;
+        this.pending = pending;
         this.cb_ref = (owned) cb;
-      }
-
-
-      public void call() throws Error {
-        this.cb_ref();
       }
     }
   }

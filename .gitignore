@@ -25,3 +25,4 @@ autom4te.cache
 /src/libvspec-1.0.vapi
 /src/libvspec-1.0.pc
 /src/libvspec.h
+.DS_Store

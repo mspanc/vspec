@@ -42,9 +42,9 @@ namespace VSpec {
 
 
     protected void describe(string name, owned ScopeFunc cb) {
-      debug(@"[VSpec.Spec] Entering: describe $name");
+      Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Entering: describe $name");
 
-      ((!) this.scope).increase_depth();
+      ((!) this.scope).increase_depth(name, false);
       cb();
 
       ((!) this.scope).call_before_each_funcs();
@@ -53,14 +53,14 @@ namespace VSpec {
 
       ((!) this.scope).decrease_depth();
 
-      debug(@"[VSpec.Spec] Exiting: describe $name");
+      Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Exiting: describe $name");
     }
 
 
     protected void context(string name, owned ScopeFunc cb) {
-      debug(@"[VSpec.Spec] Entering: context $name");
+      Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Entering: context $name");
 
-      ((!) this.scope).increase_depth();
+      ((!) this.scope).increase_depth(name, false);
       cb();
 
       ((!) this.scope).call_before_each_funcs();
@@ -69,26 +69,57 @@ namespace VSpec {
 
       ((!) this.scope).decrease_depth();
 
-      debug(@"[VSpec.Spec] Exiting: context $name");
+      Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Exiting: context $name");
     }
 
 
     protected void it(string name, owned CaseFunc cb) {
-      debug(@"[VSpec.Spec] Entering: it $name");
+      Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Entering: it $name");
 
-      ((!) this.scope).push_case_func(name, (owned) cb);
+      ((!) this.scope).push_case_func(name, (owned) cb, false);
 
-      debug(@"[VSpec.Spec] Exiting: it $name");
+      Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Exiting: it $name");
+    }
+
+
+    protected void xdescribe(string name, owned ScopeFunc cb) {
+      Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Entering: xdescribe $name");
+
+      ((!) this.scope).increase_depth(name, true);
+      cb();
+
+      ((!) this.scope).call_before_each_funcs();
+      ((!) this.scope).call_case_funcs();
+      ((!) this.scope).call_after_each_funcs();
+
+      ((!) this.scope).decrease_depth();
+
+      Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Exiting: xdescribe $name");
     }
 
 
     protected void xcontext(string name, owned ScopeFunc cb) {
-      /*this.scope = this.scope.push_context(name, (owned) cb);*/
+      Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Entering: xcontext $name");
+
+      ((!) this.scope).increase_depth(name, true);
+      cb();
+
+      ((!) this.scope).call_before_each_funcs();
+      ((!) this.scope).call_case_funcs();
+      ((!) this.scope).call_after_each_funcs();
+
+      ((!) this.scope).decrease_depth();
+
+      Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Exiting: xcontext $name");
     }
 
 
     protected void xit(string name, owned CaseFunc cb) {
-      /*this.scope = this.scope.push_context(name, (owned) cb);*/
+      Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Entering: xit $name");
+
+      ((!) this.scope).push_case_func(name, (owned) cb, true);
+
+      Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Exiting: xit $name");
     }
   }
 }

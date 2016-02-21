@@ -1,4 +1,8 @@
-# VSpec - RSpec-like testing framework for the Vala language
+# VSpec
+
+[![Build Status](https://travis-ci.org/mspanc/vspec.svg?branch=master)](https://travis-ci.org/mspanc/vspec)
+
+## RSpec-like testing framework for the Vala language
 
 This project aims at creating RSpec-like testing framework for the
 [Vala](http://live.gnome.org/Vala) language.
@@ -95,7 +99,7 @@ public static int main(string[] args) {
     // Do something after running all specs
   });
 
-  
+
   return VSpec.run();
 }
 ```
@@ -140,7 +144,7 @@ example above.
 * Basic context nesting - DONE
 * Defining variables within context (equivalent to `let!`) - DONE
 * Defining lazy-loaded variables within context (equivalent to `let`) - NOT STARTED
-* `except` syntax - NOT STARTED
+* `expect` syntax - NOT STARTED
 * Matchers - NOT STARTED
 * Shared examples - NOT STARTED
 * Different formats of console output - NOT STARTED

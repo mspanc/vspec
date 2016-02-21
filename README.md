@@ -1,6 +1,6 @@
 # VSpec
 
-![Build Status](https://img.shields.io/shippable/56ca25001895ca4474772627.svg "Build Status")
+[![Build Status](https://img.shields.io/shippable/56ca25001895ca4474772627.svg)](https://app.shippable.com/projects/56ca25001895ca4474772627)
 
 ## RSpec-like testing framework for the Vala language
 

@@ -27,13 +27,14 @@ public class AbcSpec : VSpec.Spec {
       // After each in that spec
     });
 
-    // Equivalent to let! in RSpec
-    var xyz = 123;
-    var abc1 = "abc";
-
     describe(".something", () => {
-      var abc2 = "def";
+      // Equivalent to let in RSpec
+      this["lazyvar"] = () => { return "original"; };
+
       context("if something happened", () => {
+        // Test cases will have access to the closest let
+        this["lazyvar"] = () => { return "overriden"; };
+
         before_each(() => {
           // Before each in that context
         });
@@ -46,8 +47,12 @@ public class AbcSpec : VSpec.Spec {
           // I am pending spec
         });
 
-        it("should print variables ", () => {
-          stdout.printf(@"$abc1 $abc2 $xyz\n");
+        it("should ensure that let is working", () => {
+          assert(str_equal(this["lazyvar"]().get_string(), "overriden"));
+        });
+
+        it("should fail because of invalid var name", () => {
+          assert(str_equal(this["lazyvar-invalid"]().get_string(), "def"));
         });
       });
 
@@ -144,9 +149,9 @@ example above.
 # Feature status
 
 * Basic context nesting - DONE
-* Defining variables within context (equivalent to `let!`) - DONE
+* Defining variables within context (equivalent to `let!`) - NOT STARTED
 * Reporting to the console output - DONE
-* Defining lazy-loaded variables within context (equivalent to `let`) - NOT STARTED
+* Defining lazy-loaded variables within context (equivalent to `let`) - IN PROGRESS (value is not cached)
 * `expect` syntax - NOT STARTED
 * Matchers - NOT STARTED
 * Shared examples - NOT STARTED

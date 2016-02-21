@@ -17,6 +17,10 @@
  */
 
 namespace VSpec {
+  public errordomain LetError {
+    NOT_FOUND
+  }
+
   private static GenericArray<Type>? suites           = null;
   private static BeforeFunc?         before_all_func  = null;
   private static AfterFunc?          after_all_func   = null;
@@ -28,6 +32,7 @@ namespace VSpec {
   public delegate void BeforeFunc();
   public delegate void ScopeFunc();
   public delegate void CaseFunc() throws Error;
+  public delegate Value LetFunc();
 
 
   public static void before_all(owned BeforeFunc cb) {

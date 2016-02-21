@@ -21,6 +21,7 @@ namespace VSpec {
     private GenericArray<GenericArray<BeforeFuncRef>> before_each_funcs = new GenericArray<GenericArray<BeforeFuncRef>>();
     private GenericArray<GenericArray<AfterFuncRef>>  after_each_funcs  = new GenericArray<GenericArray<AfterFuncRef>>();
     private GenericArray<GenericArray<CaseFuncRef>>   case_funcs        = new GenericArray<GenericArray<CaseFuncRef>>();
+    private GenericArray<GenericArray<LetFuncRef>>    let_funcs         = new GenericArray<GenericArray<LetFuncRef>>();
     private GenericArray<string>                      names             = new GenericArray<string>();
     private GenericArray<bool>                        pendings          = new GenericArray<bool>();
 
@@ -29,6 +30,7 @@ namespace VSpec {
       this.before_each_funcs.add(new GenericArray<BeforeFuncRef>());
       this.after_each_funcs.add(new GenericArray<AfterFuncRef>());
       this.case_funcs.add(new GenericArray<CaseFuncRef>());
+      this.let_funcs.add(new GenericArray<LetFuncRef>());
     }
 
 
@@ -41,6 +43,34 @@ namespace VSpec {
     public void push_after_each_func(owned AfterFunc cb) {
       Logger.debug(@"[VSpec.Spec $(get_depth())] Pushing: after_each ($(Logger.pointer((void *)cb)))");
       this.after_each_funcs[this.after_each_funcs.length -1].insert(0, new AfterFuncRef((owned) cb));
+    }
+
+
+    public void push_let_func(string name, owned LetFunc cb) {
+      Logger.debug(@"[VSpec.Spec $(get_depth())] Pushing: let $(name) ($(Logger.pointer((void *)cb)))");
+      this.let_funcs[this.let_funcs.length -1].add(new LetFuncRef(name, (owned) cb));
+    }
+
+
+    public LetFunc find_let_func(string name) throws LetError {
+      Logger.debug(@"[VSpec.Spec $(get_depth())] Finding: let $(name)");
+      LetFunc? result = null;
+
+      for(var i = this.let_funcs.length -1; i >= 0; i--) {
+        this.let_funcs[i].foreach((func_ref) => {
+          if(func_ref.name == name) {
+            Logger.debug(@"[VSpec.Spec $(get_depth())] Finding: let $(name) found ($(Logger.pointer((void *)func_ref.cb_ref)))");
+            result = func_ref.cb_ref;
+          }
+        });
+      }
+
+      if(result == null) {
+        throw new LetError.NOT_FOUND(@"There's no such lazy-load variable as \"$name\", ensure that let(\"$name\", () => { ... }) was called in this or any of parent contexts.");
+
+      } else {
+        return (!) result;
+      }
     }
 
 
@@ -99,8 +129,12 @@ namespace VSpec {
             Logger.debug(@"[VSpec.Spec $(get_depth())] Call OK: it $(func_ref.name) ($(Logger.pointer((void *)func_ref.cb_ref)))");
             Report.log_ok(func_ref.name, (!) this);
 
+          } catch(LetError e) {
+            Logger.debug(@"[VSpec.Spec $(get_depth())] Call Error (LetError): it $(func_ref.name) ($(Logger.pointer((void *)func_ref.cb_ref)))");
+            Report.log_error(func_ref.name, (!) this, @"LetError", e.message);
+
           } catch(Error e) {
-            Logger.debug(@"[VSpec.Spec $(get_depth())] Call error: it $(func_ref.name) ($(Logger.pointer((void *)func_ref.cb_ref)))");
+            Logger.debug(@"[VSpec.Spec $(get_depth())] Call Error (other Error): it $(func_ref.name) ($(Logger.pointer((void *)func_ref.cb_ref)))");
             Report.log_error(func_ref.name, (!) this, @"Error $(e.domain.to_string()) $(e.code)", e.message);
           }
         }
@@ -168,6 +202,17 @@ namespace VSpec {
       public CaseFuncRef(string name, owned CaseFunc cb, bool pending) {
         this.name = name;
         this.pending = pending;
+        this.cb_ref = (owned) cb;
+      }
+    }
+
+
+    private class LetFuncRef : Object {
+      public string  name    { get; construct set; }
+      public LetFunc cb_ref;
+
+      public LetFuncRef(string name, owned LetFunc cb) {
+        this.name = name;
         this.cb_ref = (owned) cb;
       }
     }

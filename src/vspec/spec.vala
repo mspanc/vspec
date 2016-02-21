@@ -121,5 +121,29 @@ namespace VSpec {
 
       Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Exiting: xit $name");
     }
+
+
+    protected void let(string name, owned LetFunc cb) {
+      Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Letting: let $name");
+
+      ((!) this.scope).push_let_func(name, (owned) cb);
+    }
+
+
+    protected LetFunc pick(string name) throws LetError {
+      Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Picking: let $name");
+
+      return ((!) this.scope).find_let_func(name);
+    }
+
+
+    protected void @set(string name, owned LetFunc cb) {
+      let(name, (owned) cb);
+    }
+
+
+    protected LetFunc @get(string name) throws LetError {
+      return pick(name);
+    }
   }
 }

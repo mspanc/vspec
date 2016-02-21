@@ -111,6 +111,22 @@ public static int main(string[] args) {
 If you set VSPEC_DEBUG environment variable, VSpec will output additional
 messages that can be useful while debugging.
 
+# Installing
+
+## Ubuntu 15.10 or 16.04
+
+In Ubuntu 15.10 or 16.04 you can use PPA. Use one of the following command
+to install packages.
+
+### Automatic nightly builds (may be unstable!)
+
+    sudo apt-add-repository ppa:mspanc/vspec-unstable
+    sudo apt-get update
+    sudo apt-get install libvspec-1.0-0 libvspec-1.0-dev libvspec-1.0-dbg
+
+### Stable builds
+
+Not available yet.
 
 # Compiling
 

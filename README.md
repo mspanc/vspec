@@ -33,7 +33,7 @@ public class AbcSpec : VSpec.Spec {
 
       context("if something happened", () => {
         // Test cases will have access to the closest let
-        this["lazyvar"] = () => { return "overriden"; };
+        this["lazyvar"] = () => { return "overridden"; };
 
         before_each(() => {
           // Before each in that context
@@ -48,7 +48,7 @@ public class AbcSpec : VSpec.Spec {
         });
 
         it("should ensure that let is working", () => {
-          assert(str_equal(this["lazyvar"]().get_string(), "overriden"));
+          assert(str_equal(this["lazyvar"]().get_string(), "overridden"));
         });
 
         it("should fail because of invalid var name", () => {
@@ -151,7 +151,7 @@ example above.
 * Basic context nesting - DONE
 * Defining variables within context (equivalent to `let!`) - NOT STARTED
 * Reporting to the console output - DONE
-* Defining lazy-loaded variables within context (equivalent to `let`) - IN PROGRESS (value is not cached)
+* Defining lazy-loaded variables within context (equivalent to `let`) - IN PROGRESS (works but value is not cached)
 * `expect` syntax - NOT STARTED
 * Matchers - NOT STARTED
 * Shared examples - NOT STARTED

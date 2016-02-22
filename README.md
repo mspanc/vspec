@@ -52,15 +52,15 @@ public class AbcSpec : VSpec.Spec {
         });
 
         it("should ensure that let is working", () => {
-          expect(this["lazyvar"])<eq>("overridden"));
+          expect(this["lazyvar"]).to<eq>("overridden");
         });
 
         it("should fail because of invalid var name", () => {
-          expect(this["lazyvar-wrongname"])<eq>("123"));
+          expect(this["lazyvar-wrongname"]).to<eq>("123");
         });
 
         it("should fail because of failed match", () => {
-          expect(this["lazyvar-wrongname"])<be_null>());
+          expect(this["lazyvar-wrongname"]).to<be_null>();
         });
       });
 

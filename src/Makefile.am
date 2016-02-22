@@ -20,6 +20,7 @@ libvspec_1_0_la_SOURCES = \
 	vspec/match.vala \
 	vspec/matcher.vala \
 	vspec/matchers/eq.vala \
+	vspec/matchers/be.vala \
 	vspec/matchers/be_null.vala \
 	vspec/matchers/be_true.vala \
 	vspec/matchers/be_false.vala \

@@ -177,7 +177,7 @@ example above.
 * Reporting to the console output - DONE
 * Defining lazy-loaded variables within context (equivalent to `let`) - IN PROGRESS (works but value is not cached)
 * `expect` syntax - IN PROGRESS (works but you cannot chain multiple matchers and pass delegates)
-* Matchers - IN PROGRESS (works by only be_instance_of, eq, be_null, be_true, be_false matchers are available)
+* Matchers - IN PROGRESS (works but only eq, be, be_instance_of, be_null, be_true, be_false matchers are available)
 * Shared examples - NOT STARTED
 * Filtering specs in the runner - NOT STARTED
 * Verbose output of the failed specs - NOT STARTED

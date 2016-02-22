@@ -162,10 +162,10 @@ namespace VSpec {
     }
 
 
-    protected LetFunc pick(string name) throws LetError {
+    protected Value pick(string name) throws LetError {
       Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Picking: let $name");
 
-      return ((!) this.scope).find_let_func(name);
+      return ((!) this.scope).find_let_func(name)();
     }
 
 
@@ -174,7 +174,7 @@ namespace VSpec {
     }
 
 
-    protected LetFunc @get(string name) throws LetError {
+    protected Value @get(string name) throws LetError {
       return pick(name);
     }
 

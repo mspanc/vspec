@@ -104,12 +104,12 @@ namespace VSpec {
 
 
       protected override string get_positive_message() {
-        return "Expected values to be equal";
+        return "Expected values to be have exact reference";
       }
 
 
       protected override string get_negative_message() {
-        return "Expected values to be not equal";
+        return "Expected values to be not have exact reference";
       }
     }
   }

@@ -163,9 +163,34 @@ namespace VSpec {
 
 
     protected Value? pick(string name) throws LetError {
-      Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Picking: let $name");
+      Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Picking: $name");
 
       return ((!) this.scope).find_let_func(name)();
+    }
+
+
+    protected ExpectedType pick_as<ExpectedType>(string name) throws LetError {
+      Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Picking as $(typeof(ExpectedType).name()): $name");
+
+      Value? value = ((!) this.scope).find_let_func(name)();
+      if(value != null) {
+        if(((!) value).holds(typeof(ExpectedType))) {
+          if(typeof(ExpectedType).is_a(typeof(Object))) {
+            return (ExpectedType) ((!) value).get_object();
+
+          } else {
+            // TODO change to throw
+            assert_not_reached();
+          }
+
+        } else {
+          // TODO change to throw
+          assert_not_reached();
+        }
+
+      } else {
+        assert_not_reached();
+      }
     }
 
 

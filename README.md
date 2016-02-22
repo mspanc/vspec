@@ -4,7 +4,7 @@
 
 ## RSpec-like testing framework for the Vala language
 
-This project aims at creating RSpec-like testing framework for the
+This project aims at creating [RSpec](http://rspec.info)-like testing framework for the
 [Vala](http://live.gnome.org/Vala) language.
 
 It is at early stage of development but should be sufficient for basic needs

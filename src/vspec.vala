@@ -21,6 +21,10 @@ namespace VSpec {
     NOT_FOUND
   }
 
+  public errordomain MatchError {
+    MISMATCH
+  }
+
   private static GenericArray<Type>? suites           = null;
   private static BeforeFunc?         before_all_func  = null;
   private static AfterFunc?          after_all_func   = null;
@@ -33,7 +37,7 @@ namespace VSpec {
   public delegate void ScopeFunc() throws LetError;
   public delegate void CaseFunc() throws Error;
   public delegate Value LetFunc();
-
+  public delegate bool MatchFunc(Value value, bool positive);
 
   public static void before_all(owned BeforeFunc cb) {
     before_all_func = (owned) cb;

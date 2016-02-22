@@ -177,5 +177,10 @@ namespace VSpec {
     protected LetFunc @get(string name) throws LetError {
       return pick(name);
     }
+
+
+    protected Expectation expect(Value value_left) {
+      return new Expectation(value_left);
+    }
   }
 }

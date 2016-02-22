@@ -179,13 +179,11 @@ namespace VSpec {
             return (ExpectedType) ((!) value).get_object();
 
           } else {
-            // TODO change to throw
-            assert_not_reached();
+            throw new LetError.TYPE_NOT_SUPPORTED(@"Unable to call pick_as: Type $(typeof(ExpectedType).name()) is not supported");
           }
 
         } else {
-          // TODO change to throw
-          assert_not_reached();
+          throw new LetError.TYPE_MISMATCH(@"Unable to call pick_as: Requested type $(typeof(ExpectedType).name()) but value is of type $(((!) value).type().name())");
         }
 
       } else {

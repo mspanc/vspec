@@ -18,7 +18,9 @@
 
 namespace VSpec {
   public errordomain LetError {
-    NOT_FOUND
+    NOT_FOUND,
+    TYPE_MISMATCH,
+    TYPE_NOT_SUPPORTED
   }
 
   public errordomain MatchError {

@@ -19,33 +19,42 @@
 namespace VSpec {
   namespace Matchers {
     /*
-     * This matcher tests if passed value is a boolean value set to false.
+     * This matcher tests if passed Object is of certain type.
      */
-    public class be_false : Matcher {
+    public class be_instance_of : Matcher {
       protected override bool message_contains_value_right { get { return false; } }
 
       public override void match() throws MatchError {
-        if(this.value_left == null) {
-          throw new MatchError.MISMATCH(get_mismatch_message());
+        if(this.value_left == null || this.value_right == null) {
+          throw new MatchError.MISMATCH(@"Unable to use be matcher with null values, $(get_values_message()).");
         }
 
-        if(((!)this.value_left).type() != typeof(bool)) {
-          throw new MatchError.MISMATCH(get_mismatch_message());
+        if(!((!)this.value_left).holds(typeof(Object))) {
+          throw new MatchError.MISMATCH(@"Unable to use eq matcher with non-Object left value, $(get_values_message()).");
         }
 
-        if((((!)this.value_left).get_boolean() == false) != positive) {
+        if(!((!)this.value_right).holds(typeof(void *))) {
+          throw new MatchError.MISMATCH(@"Unable to use eq matcher with non-Type right value, $(get_values_message()).");
+        }
+
+        if((((!)this.value_left).get_object().get_type().is_a(get_tested_type())) != positive) {
           throw new MatchError.MISMATCH(get_mismatch_message());
         }
+      }
+
+
+      private Type get_tested_type() {
+        return (Type) ((!)this.value_right).get_pointer();
       }
 
 
       protected override string get_positive_message() {
-        return "Expected value to be false";
+        return @"Expected value to be of type $(get_tested_type().name())";
       }
 
 
       protected override string get_negative_message() {
-        return "Expected value to be not false";
+        return @"Expected value to be not of type $(get_tested_type().name())";
       }
     }
   }

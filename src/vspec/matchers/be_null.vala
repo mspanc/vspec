@@ -18,8 +18,11 @@
 
 namespace VSpec {
   namespace Matchers {
+    /*
+     * This matcher tests if passed value is a null pointer.
+     */
     public class be_null : Matcher {
-      protected override bool uses_value_right { get { return false; } }
+      protected override bool message_contains_value_right { get { return false; } }
 
       public override void match() throws MatchError {
         if((this.value_left == null) != positive) {

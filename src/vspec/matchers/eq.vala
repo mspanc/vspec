@@ -18,8 +18,18 @@
 
 namespace VSpec {
   namespace Matchers {
+    /*
+     * This matcher tests equality of two values.
+     *
+     * It tests whether values are equal, not if pointers to the memory of passed
+     * values are equal.
+     *
+     * {{{
+     * expect(123).to<eq>(456);
+     * }}}
+     */
     public class eq : Matcher {
-      protected override bool uses_value_right { get { return true; } }
+      protected override bool message_contains_value_right { get { return true; } }
 
       public override void match() throws MatchError {
         if(this.value_left == null || this.value_right == null) {
@@ -96,9 +106,8 @@ namespace VSpec {
           }
 
         } else if(((!)this.value_left).holds(typeof(Object))) {
-          if((((!)this.value_left).get_object() == ((!)this.value_right).get_object()) != positive) {
-            throw new MatchError.MISMATCH(get_mismatch_message());
-          }
+          critical(@"TODO: eq operator for objects is not yet implemented");
+          assert_not_reached();
 
         } else if(((!)this.value_left).holds(typeof(void *))) {
           if((((!)this.value_left).get_pointer() == ((!)this.value_right).get_pointer()) != positive) {

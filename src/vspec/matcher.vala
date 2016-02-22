@@ -22,7 +22,7 @@ namespace VSpec {
     public Value? value_right = null;
     public bool   positive    = true;
 
-    protected abstract bool uses_value_right { get; }
+    protected abstract bool message_contains_value_right { get; }
 
     public abstract void match() throws MatchError;
     public abstract string get_positive_message();
@@ -39,7 +39,7 @@ namespace VSpec {
     }
 
     protected string get_values_message() {
-      if(this.uses_value_right) {
+      if(this.message_contains_value_right) {
         return @"$(value_to_string(this.value_left)) and $(value_to_string(this.value_right)) given";
 
       } else {

@@ -18,8 +18,11 @@
 
 namespace VSpec {
   namespace Matchers {
+    /*
+     * This matcher tests if passed value is a boolean value set to true.
+     */
     public class be_true : Matcher {
-      protected override bool uses_value_right { get { return false; } }
+      protected override bool message_contains_value_right { get { return false; } }
 
       public override void match() throws MatchError {
         if(this.value_left == null) {

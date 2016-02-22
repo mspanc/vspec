@@ -60,7 +60,7 @@ public class AbcSpec : VSpec.Spec {
         });
 
         it("should fail because of failed match", () => {
-          expect(this["lazyvar-wrongname"]).to<be_null>();
+          expect(this["lazyvar"]).to<be_null>();
         });
       });
 

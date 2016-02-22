@@ -18,9 +18,11 @@
 
 namespace VSpec {
   public abstract class Matcher : Object {
-    public Value value_left  { get; construct set; }
-    public Value value_right { get; construct set; }
-    public bool  positive    { get; construct set; }
+    public Value? value_left  = null;
+    public Value? value_right = null;
+    public bool   positive    = true;
+
+    protected abstract bool uses_value_right { get; }
 
     public abstract void match() throws MatchError;
     public abstract string get_positive_message();
@@ -37,58 +39,66 @@ namespace VSpec {
     }
 
     protected string get_values_message() {
-      return @"$(value_to_string(this.value_left)) and $(value_to_string(this.value_right)) given";
+      if(this.uses_value_right) {
+        return @"$(value_to_string(this.value_left)) and $(value_to_string(this.value_right)) given";
+
+      } else {
+        return @"$(value_to_string(this.value_left)) given";
+      }
     }
 
 
-    protected string value_to_string(Value value) {
-      if(value.holds(typeof(string))) {
-        return @"(string) \"$(value.get_string())\"";
+    protected string value_to_string(Value? value) {
+      if(value == null) {
+        return "(null)";
 
-      } else if(value.holds(typeof(bool))) {
-        return value.get_boolean() ? "(boolean) true" : "(boolean) false";
+      } else if(((!)value).holds(typeof(string))) {
+        return @"(string) \"$(((!)value).get_string())\"";
 
-      } else if(value.holds(typeof(char))) {
-        return @"(char) $(value.get_char())";
+      } else if(((!)value).holds(typeof(bool))) {
+        return ((!)value).get_boolean() ? "(boolean) true" : "(boolean) false";
 
-      } else if(value.holds(typeof(int8))) {
-        return @"(schar) $(value.get_schar())";
+      } else if(((!)value).holds(typeof(char))) {
+        return @"(char) $(((!)value).get_char())";
 
-      } else if(value.holds(typeof(uchar))) {
-        return @"(uchar) $(value.get_uchar())";
+      } else if(((!)value).holds(typeof(int8))) {
+        return @"(schar) $(((!)value).get_schar())";
 
-      } else if(value.holds(typeof(int))) {
-        return @"(int16) $(value.get_int())";
+      } else if(((!)value).holds(typeof(uchar))) {
+        return @"(uchar) $(((!)value).get_uchar())";
 
-      } else if(value.holds(typeof(uint))) {
-        return @"(uint16) $(value.get_uint())";
+      } else if(((!)value).holds(typeof(int))) {
+        return @"(int16) $(((!)value).get_int())";
 
-      } else if(value.holds(typeof(long))) {
-        return @"(int32) $(value.get_long())";
+      } else if(((!)value).holds(typeof(uint))) {
+        return @"(uint16) $(((!)value).get_uint())";
 
-      } else if(value.holds(typeof(ulong))) {
-        return @"(uuint32) $(value.get_ulong())";
+      } else if(((!)value).holds(typeof(long))) {
+        return @"(int32) $(((!)value).get_long())";
 
-      } else if(value.holds(typeof(int64))) {
-        return @"(int64) $(value.get_int64())";
+      } else if(((!)value).holds(typeof(ulong))) {
+        return @"(uuint32) $(((!)value).get_ulong())";
 
-      } else if(value.holds(typeof(uint64))) {
-        return @"(uint64) $(value.get_uint64())";
+      } else if(((!)value).holds(typeof(int64))) {
+        return @"(int64) $(((!)value).get_int64())";
 
-      } else if(value.holds(typeof(float))) {
-        return @"(float) $(value.get_float())";
+      } else if(((!)value).holds(typeof(uint64))) {
+        return @"(uint64) $(((!)value).get_uint64())";
 
-      } else if(value.holds(typeof(double))) {
-        return @"(double) $(value.get_double())";
+      } else if(((!)value).holds(typeof(float))) {
+        return @"(float) $(((!)value).get_float())";
 
-      } else if(value.holds(typeof(Object))) {
-        return @"(object) $(value.get_object().get_type().name()) $("%p".printf(value.get_object()))";
+      } else if(((!)value).holds(typeof(double))) {
+        return @"(double) $(((!)value).get_double())";
 
-      } else if(value.holds(typeof(void *))) {
-        return @"(pointer) $("%p".printf(value.get_pointer()))";
+      } else if(((!)value).holds(typeof(Object))) {
+        return @"(object) $(((!)value).get_object().get_type().name()) $("%p".printf(((!)value).get_object()))";
+
+      } else if(((!)value).holds(typeof(void *))) {
+        return @"(pointer) $("%p".printf(((!)value).get_pointer()))";
 
       } else {
-        critical(@"Unable to print value: Unknown value type $(value.type().name())");
+        critical(@"Unable to print value: Unknown value type $(((!)value).type().name())");
         assert_not_reached();
       }
     }

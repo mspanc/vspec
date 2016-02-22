@@ -19,6 +19,8 @@ Contributions are welcome!
 ## Spec
 
 ```vala
+using VSpec.Matchers;
+
 public class AbcSpec : VSpec.Spec {
   public override void define() {
     before_each(() => {
@@ -50,11 +52,15 @@ public class AbcSpec : VSpec.Spec {
         });
 
         it("should ensure that let is working", () => {
-          assert(str_equal(this["lazyvar"]().get_string(), "overridden"));
+          expect(this["lazyvar"])<eq>("overridden"));
         });
 
         it("should fail because of invalid var name", () => {
-          assert(str_equal(this["lazyvar-invalid"]().get_string(), "def"));
+          expect(this["lazyvar-wrongname"])<eq>("123"));
+        });
+
+        it("should fail because of failed match", () => {
+          expect(this["lazyvar-wrongname"])<be_null>());
         });
       });
 
@@ -170,11 +176,12 @@ example above.
 * Defining variables within context (equivalent to `let!`) - NOT STARTED
 * Reporting to the console output - DONE
 * Defining lazy-loaded variables within context (equivalent to `let`) - IN PROGRESS (works but value is not cached)
-* `expect` syntax - NOT STARTED
-* Matchers - NOT STARTED
+* `expect` syntax - IN PROGRESS (works but you cannot chain multiple matchers and pass delegates)
+* Matchers - IN PROGRESS (works by only eq, be_null, be_true, be_false matchers are available)
 * Shared examples - NOT STARTED
 * Filtering specs in the runner - NOT STARTED
 * Verbose output of the failed specs - NOT STARTED
+* TAP output - NOT STARTED
 
 # License
 

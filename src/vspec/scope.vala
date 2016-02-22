@@ -152,6 +152,10 @@ namespace VSpec {
             Logger.debug(@"[VSpec.Spec $(get_depth())] Call OK: it $(func_ref.name) ($(Logger.pointer((void *)func_ref.cb_ref)))");
             Report.log_ok(func_ref.name, (!) this);
 
+          } catch(MatchError e) {
+            Logger.debug(@"[VSpec.Spec $(get_depth())] Match Error (LetError): it $(func_ref.name) ($(Logger.pointer((void *)func_ref.cb_ref)))");
+            Report.log_error(func_ref.name, (!) this, @"Expectation failed: $(e.message)");
+
           } catch(LetError e) {
             Logger.debug(@"[VSpec.Spec $(get_depth())] Call Error (LetError): it $(func_ref.name) ($(Logger.pointer((void *)func_ref.cb_ref)))");
             Report.log_error(func_ref.name, (!) this, @"LetError in it(): $(e.message)");

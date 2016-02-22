@@ -19,88 +19,94 @@
 namespace VSpec {
   namespace Matchers {
     public class eq : Matcher {
+      protected override bool uses_value_right { get { return true; } }
+
       public override void match() throws MatchError {
-        if(this.value_left.type() != this.value_right.type()) {
+        if(this.value_left == null || this.value_right == null) {
+          throw new MatchError.MISMATCH(@"Unable to use eq matcher with null values, $(get_values_message()).");
+        }
+
+        if(((!)this.value_left).type() != ((!)this.value_right).type()) {
           throw new MatchError.MISMATCH(@"Unable to use eq matcher with two different value types, $(get_values_message()).");
         }
 
-        if(this.value_left.holds(typeof(string))) {
-          if(str_equal(this.value_left.get_string(), this.value_right.get_string()) != positive) {
+        if(((!)this.value_left).holds(typeof(string))) {
+          if(str_equal(((!)this.value_left).get_string(), ((!)this.value_right).get_string()) != positive) {
             throw new MatchError.MISMATCH(get_mismatch_message());
           }
 
-        } else if(value_left.holds(typeof(bool))) {
-          if((this.value_left.get_boolean() == this.value_right.get_boolean()) != positive) {
+        } else if(((!)this.value_left).holds(typeof(bool))) {
+          if((((!)this.value_left).get_boolean() == ((!)this.value_right).get_boolean()) != positive) {
             throw new MatchError.MISMATCH(get_mismatch_message());
           }
 
-        } else if(value_left.holds(typeof(char))) {
-          if((this.value_left.get_char() == this.value_right.get_char()) != positive) {
+        } else if(((!)this.value_left).holds(typeof(char))) {
+          if((((!)this.value_left).get_char() == ((!)this.value_right).get_char()) != positive) {
             throw new MatchError.MISMATCH(get_mismatch_message());
           }
 
-        } else if(value_left.holds(typeof(int8))) {
-          if((this.value_left.get_schar() == this.value_right.get_schar()) != positive) {
+        } else if(((!)this.value_left).holds(typeof(int8))) {
+          if((((!)this.value_left).get_schar() == ((!)this.value_right).get_schar()) != positive) {
             throw new MatchError.MISMATCH(get_mismatch_message());
           }
 
-        } else if(value_left.holds(typeof(uchar))) {
-          if((this.value_left.get_uchar() == this.value_right.get_uchar()) != positive) {
+        } else if(((!)this.value_left).holds(typeof(uchar))) {
+          if((((!)this.value_left).get_uchar() == ((!)this.value_right).get_uchar()) != positive) {
             throw new MatchError.MISMATCH(get_mismatch_message());
           }
 
-        } else if(value_left.holds(typeof(int))) {
-          if((this.value_left.get_int() == this.value_right.get_int()) != positive) {
+        } else if(((!)this.value_left).holds(typeof(int))) {
+          if((((!)this.value_left).get_int() == ((!)this.value_right).get_int()) != positive) {
             throw new MatchError.MISMATCH(get_mismatch_message());
           }
 
-        } else if(value_left.holds(typeof(uint))) {
-          if((this.value_left.get_uint() == this.value_right.get_uint()) != positive) {
+        } else if(((!)this.value_left).holds(typeof(uint))) {
+          if((((!)this.value_left).get_uint() == ((!)this.value_right).get_uint()) != positive) {
             throw new MatchError.MISMATCH(get_mismatch_message());
           }
 
-        } else if(value_left.holds(typeof(long))) {
-          if((this.value_left.get_long() == this.value_right.get_long()) != positive) {
+        } else if(((!)this.value_left).holds(typeof(long))) {
+          if((((!)this.value_left).get_long() == ((!)this.value_right).get_long()) != positive) {
             throw new MatchError.MISMATCH(get_mismatch_message());
           }
 
-        } else if(value_left.holds(typeof(ulong))) {
-          if((this.value_left.get_ulong() == this.value_right.get_ulong()) != positive) {
+        } else if(((!)this.value_left).holds(typeof(ulong))) {
+          if((((!)this.value_left).get_ulong() == ((!)this.value_right).get_ulong()) != positive) {
             throw new MatchError.MISMATCH(get_mismatch_message());
           }
 
-        } else if(value_left.holds(typeof(int64))) {
-          if((this.value_left.get_int64() == this.value_right.get_int64()) != positive) {
+        } else if(((!)this.value_left).holds(typeof(int64))) {
+          if((((!)this.value_left).get_int64() == ((!)this.value_right).get_int64()) != positive) {
             throw new MatchError.MISMATCH(get_mismatch_message());
           }
 
-        } else if(value_left.holds(typeof(uint64))) {
-          if((this.value_left.get_uint64() == this.value_right.get_uint64()) != positive) {
+        } else if(((!)this.value_left).holds(typeof(uint64))) {
+          if((((!)this.value_left).get_uint64() == ((!)this.value_right).get_uint64()) != positive) {
             throw new MatchError.MISMATCH(get_mismatch_message());
           }
 
-        } else if(value_left.holds(typeof(float))) {
-          if((this.value_left.get_float() == this.value_right.get_float()) != positive) {
+        } else if(((!)this.value_left).holds(typeof(float))) {
+          if((((!)this.value_left).get_float() == ((!)this.value_right).get_float()) != positive) {
             throw new MatchError.MISMATCH(get_mismatch_message());
           }
 
-        } else if(value_left.holds(typeof(double))) {
-          if((this.value_left.get_double() == this.value_right.get_double()) != positive) {
+        } else if(((!)this.value_left).holds(typeof(double))) {
+          if((((!)this.value_left).get_double() == ((!)this.value_right).get_double()) != positive) {
             throw new MatchError.MISMATCH(get_mismatch_message());
           }
 
-        } else if(value_left.holds(typeof(Object))) {
-          if((this.value_left.get_object() == this.value_right.get_object()) != positive) {
+        } else if(((!)this.value_left).holds(typeof(Object))) {
+          if((((!)this.value_left).get_object() == ((!)this.value_right).get_object()) != positive) {
             throw new MatchError.MISMATCH(get_mismatch_message());
           }
 
-        } else if(value_left.holds(typeof(void *))) {
-          if((this.value_left.get_pointer() == this.value_right.get_pointer()) != positive) {
+        } else if(((!)this.value_left).holds(typeof(void *))) {
+          if((((!)this.value_left).get_pointer() == ((!)this.value_right).get_pointer()) != positive) {
             throw new MatchError.MISMATCH(get_mismatch_message());
           }
 
         } else {
-          critical(@"Unable to compare value: Unknown value type $(value_left.type().name()) or $(value_right.type().name())");
+          critical(@"Unable to compare value: Unknown value type $(((!)this.value_left).type().name()) or $(((!)this.value_right).type().name())");
           assert_not_reached();
         }
       }

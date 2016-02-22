@@ -19,7 +19,10 @@ libvspec_1_0_la_SOURCES = \
 	vspec/expectation.vala \
 	vspec/match.vala \
 	vspec/matcher.vala \
-	vspec/matchers/eq.vala
+	vspec/matchers/eq.vala \
+	vspec/matchers/be_null.vala \
+	vspec/matchers/be_true.vala \
+	vspec/matchers/be_false.vala
 
 libvspec_1_0_la_VALAFLAGS = --library libvspec-1.0 --vapi libvspec-1.0.vapi -H libvspec.h --pkg=glib-2.0 --pkg=gobject-2.0 --enable-experimental --enable-experimental-non-null
 libvspec_1_0_la_CFLAGS = $(LIBVSPEC_CFLAGS)

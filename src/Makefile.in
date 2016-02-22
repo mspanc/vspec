@@ -148,7 +148,10 @@ am_libvspec_1_0_la_OBJECTS = libvspec_1_0_la-vspec.lo \
 	vspec/libvspec_1_0_la-expectation.lo \
 	vspec/libvspec_1_0_la-match.lo \
 	vspec/libvspec_1_0_la-matcher.lo \
-	vspec/matchers/libvspec_1_0_la-eq.lo
+	vspec/matchers/libvspec_1_0_la-eq.lo \
+	vspec/matchers/libvspec_1_0_la-be_null.lo \
+	vspec/matchers/libvspec_1_0_la-be_true.lo \
+	vspec/matchers/libvspec_1_0_la-be_false.lo
 libvspec_1_0_la_OBJECTS = $(am_libvspec_1_0_la_OBJECTS)
 AM_V_lt = $(am__v_lt_@AM_V@)
 am__v_lt_ = $(am__v_lt_@AM_DEFAULT_V@)
@@ -232,8 +235,9 @@ am__DIST_COMMON = $(srcdir)/Makefile.in $(srcdir)/libvspec-1.0.pc.in \
 	$(srcdir)/libvspec-1.0.vapi $(srcdir)/libvspec.h \
 	$(srcdir)/libvspec_1_0_la_vala.stamp $(top_srcdir)/depcomp \
 	vspec.c vspec/expectation.c vspec/logger.c vspec/match.c \
-	vspec/matcher.c vspec/matchers/eq.c vspec/report.c \
-	vspec/scope.c vspec/spec.c
+	vspec/matcher.c vspec/matchers/be_false.c \
+	vspec/matchers/be_null.c vspec/matchers/be_true.c \
+	vspec/matchers/eq.c vspec/report.c vspec/scope.c vspec/spec.c
 DISTFILES = $(DIST_COMMON) $(DIST_SOURCES) $(TEXINFOS) $(EXTRA_DIST)
 ACLOCAL = @ACLOCAL@
 AMTAR = @AMTAR@
@@ -377,7 +381,10 @@ libvspec_1_0_la_SOURCES = \
 	vspec/expectation.vala \
 	vspec/match.vala \
 	vspec/matcher.vala \
-	vspec/matchers/eq.vala
+	vspec/matchers/eq.vala \
+	vspec/matchers/be_null.vala \
+	vspec/matchers/be_true.vala \
+	vspec/matchers/be_false.vala
 
 libvspec_1_0_la_VALAFLAGS = --library libvspec-1.0 --vapi libvspec-1.0.vapi -H libvspec.h --pkg=glib-2.0 --pkg=gobject-2.0 --enable-experimental --enable-experimental-non-null
 libvspec_1_0_la_CFLAGS = $(LIBVSPEC_CFLAGS)
@@ -499,6 +506,15 @@ vspec/matchers/$(DEPDIR)/$(am__dirstamp):
 	@: > vspec/matchers/$(DEPDIR)/$(am__dirstamp)
 vspec/matchers/libvspec_1_0_la-eq.lo: vspec/matchers/$(am__dirstamp) \
 	vspec/matchers/$(DEPDIR)/$(am__dirstamp)
+vspec/matchers/libvspec_1_0_la-be_null.lo:  \
+	vspec/matchers/$(am__dirstamp) \
+	vspec/matchers/$(DEPDIR)/$(am__dirstamp)
+vspec/matchers/libvspec_1_0_la-be_true.lo:  \
+	vspec/matchers/$(am__dirstamp) \
+	vspec/matchers/$(DEPDIR)/$(am__dirstamp)
+vspec/matchers/libvspec_1_0_la-be_false.lo:  \
+	vspec/matchers/$(am__dirstamp) \
+	vspec/matchers/$(DEPDIR)/$(am__dirstamp)
 
 libvspec-1.0.la: $(libvspec_1_0_la_OBJECTS) $(libvspec_1_0_la_DEPENDENCIES) $(EXTRA_libvspec_1_0_la_DEPENDENCIES) 
 	$(AM_V_CCLD)$(libvspec_1_0_la_LINK) -rpath $(libdir) $(libvspec_1_0_la_OBJECTS) $(libvspec_1_0_la_LIBADD) $(LIBS)
@@ -521,6 +537,9 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@vspec/$(DEPDIR)/libvspec_1_0_la-report.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@vspec/$(DEPDIR)/libvspec_1_0_la-scope.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@vspec/$(DEPDIR)/libvspec_1_0_la-spec.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_false.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_null.Plo@am__quote@
+@AMDEP_TRUE@@am__include@ @am__quote@vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_true.Plo@am__quote@
 @AMDEP_TRUE@@am__include@ @am__quote@vspec/matchers/$(DEPDIR)/libvspec_1_0_la-eq.Plo@am__quote@
 
 .c.o:
@@ -609,6 +628,27 @@ vspec/matchers/libvspec_1_0_la-eq.lo: vspec/matchers/eq.c
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec/matchers/eq.c' object='vspec/matchers/libvspec_1_0_la-eq.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/matchers/libvspec_1_0_la-eq.lo `test -f 'vspec/matchers/eq.c' || echo '$(srcdir)/'`vspec/matchers/eq.c
+
+vspec/matchers/libvspec_1_0_la-be_null.lo: vspec/matchers/be_null.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/matchers/libvspec_1_0_la-be_null.lo -MD -MP -MF vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_null.Tpo -c -o vspec/matchers/libvspec_1_0_la-be_null.lo `test -f 'vspec/matchers/be_null.c' || echo '$(srcdir)/'`vspec/matchers/be_null.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_null.Tpo vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_null.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec/matchers/be_null.c' object='vspec/matchers/libvspec_1_0_la-be_null.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/matchers/libvspec_1_0_la-be_null.lo `test -f 'vspec/matchers/be_null.c' || echo '$(srcdir)/'`vspec/matchers/be_null.c
+
+vspec/matchers/libvspec_1_0_la-be_true.lo: vspec/matchers/be_true.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/matchers/libvspec_1_0_la-be_true.lo -MD -MP -MF vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_true.Tpo -c -o vspec/matchers/libvspec_1_0_la-be_true.lo `test -f 'vspec/matchers/be_true.c' || echo '$(srcdir)/'`vspec/matchers/be_true.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_true.Tpo vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_true.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec/matchers/be_true.c' object='vspec/matchers/libvspec_1_0_la-be_true.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/matchers/libvspec_1_0_la-be_true.lo `test -f 'vspec/matchers/be_true.c' || echo '$(srcdir)/'`vspec/matchers/be_true.c
+
+vspec/matchers/libvspec_1_0_la-be_false.lo: vspec/matchers/be_false.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/matchers/libvspec_1_0_la-be_false.lo -MD -MP -MF vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_false.Tpo -c -o vspec/matchers/libvspec_1_0_la-be_false.lo `test -f 'vspec/matchers/be_false.c' || echo '$(srcdir)/'`vspec/matchers/be_false.c
+@am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_false.Tpo vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_false.Plo
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec/matchers/be_false.c' object='vspec/matchers/libvspec_1_0_la-be_false.lo' libtool=yes @AMDEPBACKSLASH@
+@AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/matchers/libvspec_1_0_la-be_false.lo `test -f 'vspec/matchers/be_false.c' || echo '$(srcdir)/'`vspec/matchers/be_false.c
 $(srcdir)/vspec.c: $(srcdir)/libvspec_1_0_la_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/libvspec_1_0_la_vala.stamp; fi
 	@if test -f $@; then :; else \
@@ -654,6 +694,21 @@ $(srcdir)/vspec/matchers/eq.c: $(srcdir)/libvspec_1_0_la_vala.stamp
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/libvspec_1_0_la_vala.stamp; \
 	fi
+$(srcdir)/vspec/matchers/be_null.c: $(srcdir)/libvspec_1_0_la_vala.stamp
+	@if test -f $@; then :; else rm -f $(srcdir)/libvspec_1_0_la_vala.stamp; fi
+	@if test -f $@; then :; else \
+	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/libvspec_1_0_la_vala.stamp; \
+	fi
+$(srcdir)/vspec/matchers/be_true.c: $(srcdir)/libvspec_1_0_la_vala.stamp
+	@if test -f $@; then :; else rm -f $(srcdir)/libvspec_1_0_la_vala.stamp; fi
+	@if test -f $@; then :; else \
+	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/libvspec_1_0_la_vala.stamp; \
+	fi
+$(srcdir)/vspec/matchers/be_false.c: $(srcdir)/libvspec_1_0_la_vala.stamp
+	@if test -f $@; then :; else rm -f $(srcdir)/libvspec_1_0_la_vala.stamp; fi
+	@if test -f $@; then :; else \
+	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/libvspec_1_0_la_vala.stamp; \
+	fi
 $(srcdir)/libvspec-1.0.vapi: $(srcdir)/libvspec_1_0_la_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/libvspec_1_0_la_vala.stamp; fi
 	@if test -f $@; then :; else \
@@ -664,9 +719,9 @@ $(srcdir)/libvspec.h: $(srcdir)/libvspec_1_0_la_vala.stamp
 	@if test -f $@; then :; else \
 	  $(MAKE) $(AM_MAKEFLAGS) $(srcdir)/libvspec_1_0_la_vala.stamp; \
 	fi
-$(srcdir)/libvspec_1_0_la_vala.stamp: vspec.vala vspec/spec.vala vspec/report.vala vspec/logger.vala vspec/scope.vala vspec/expectation.vala vspec/match.vala vspec/matcher.vala vspec/matchers/eq.vala
+$(srcdir)/libvspec_1_0_la_vala.stamp: vspec.vala vspec/spec.vala vspec/report.vala vspec/logger.vala vspec/scope.vala vspec/expectation.vala vspec/match.vala vspec/matcher.vala vspec/matchers/eq.vala vspec/matchers/be_null.vala vspec/matchers/be_true.vala vspec/matchers/be_false.vala
 	$(AM_V_at)rm -f $@ && echo stamp > $@-t
-	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(libvspec_1_0_la_VALAFLAGS) $(VALAFLAGS) -C vspec.vala vspec/spec.vala vspec/report.vala vspec/logger.vala vspec/scope.vala vspec/expectation.vala vspec/match.vala vspec/matcher.vala vspec/matchers/eq.vala
+	$(AM_V_VALAC)$(am__cd) $(srcdir) && $(VALAC) $(libvspec_1_0_la_VALAFLAGS) $(VALAFLAGS) -C vspec.vala vspec/spec.vala vspec/report.vala vspec/logger.vala vspec/scope.vala vspec/expectation.vala vspec/match.vala vspec/matcher.vala vspec/matchers/eq.vala vspec/matchers/be_null.vala vspec/matchers/be_true.vala vspec/matchers/be_false.vala
 	$(AM_V_at)mv -f $@-t $@
 
 mostlyclean-libtool:
@@ -871,6 +926,9 @@ maintainer-clean-generic:
 	-rm -f $(srcdir)/vspec/logger.c
 	-rm -f $(srcdir)/vspec/match.c
 	-rm -f $(srcdir)/vspec/matcher.c
+	-rm -f $(srcdir)/vspec/matchers/be_false.c
+	-rm -f $(srcdir)/vspec/matchers/be_null.c
+	-rm -f $(srcdir)/vspec/matchers/be_true.c
 	-rm -f $(srcdir)/vspec/matchers/eq.c
 	-rm -f $(srcdir)/vspec/report.c
 	-rm -f $(srcdir)/vspec/scope.c
@@ -880,6 +938,9 @@ maintainer-clean-generic:
 	-rm -f vspec/logger.c
 	-rm -f vspec/match.c
 	-rm -f vspec/matcher.c
+	-rm -f vspec/matchers/be_false.c
+	-rm -f vspec/matchers/be_null.c
+	-rm -f vspec/matchers/be_true.c
 	-rm -f vspec/matchers/eq.c
 	-rm -f vspec/report.c
 	-rm -f vspec/scope.c

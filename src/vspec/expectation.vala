@@ -18,28 +18,32 @@
 
 namespace VSpec {
   public class Expectation : Object {
-    public Value value_left { get; construct set; }
+    public Value? value_left;
 
 
-    public Expectation(Value value_left) {
-      Object(value_left: value_left);
+    public Expectation(Value? value_left) {
+      this.value_left = value_left;
     }
 
 
-    public Match to<matcher_type>(Value value_right) throws MatchError {
+    public Match to<matcher_type>(Value? value_right = null) throws MatchError {
       return match<matcher_type>(value_right, true);
     }
 
 
-    public Match not_to<matcher_type>(Value value_right) throws MatchError {
+    public Match not_to<matcher_type>(Value? value_right = null) throws MatchError {
       return match<matcher_type>(value_right, false);
     }
 
 
-    public Match match<matcher_type>(Value value_right, bool positive) throws MatchError {
-      Matcher? matcher = Object.new(typeof(matcher_type), "value_left", this.value_left, "value_right", value_right, "positive", positive) as Matcher;
+    private Match match<matcher_type>(Value? value_right, bool positive) throws MatchError {
+      Matcher? matcher = Object.new(typeof(matcher_type)) as Matcher;
 
       if(matcher != null) {
+        ((!)matcher).value_left  = this.value_left;
+        ((!)matcher).value_right = value_right;
+        ((!)matcher).positive    = positive;
+
         return new Match((!) matcher);
 
       } else {

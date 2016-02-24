@@ -77,7 +77,7 @@ namespace VSpec {
         return @"(int32) $(((!)value).get_long())";
 
       } else if(((!)value).holds(typeof(ulong))) {
-        return @"(uuint32) $(((!)value).get_ulong())";
+        return @"(uint32) $(((!)value).get_ulong())";
 
       } else if(((!)value).holds(typeof(int64))) {
         return @"(int64) $(((!)value).get_int64())";

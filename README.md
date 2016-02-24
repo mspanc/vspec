@@ -128,7 +128,7 @@ to install packages.
 
 ### Automatic nightly builds (may be unstable!)
 
-    sudo apt-add-repository ppa:mspanc/vspec-unstable
+    sudo apt-add-repository ppa:vspec/unstable
     sudo apt-get update
     sudo apt-get install libvspec-1.0-0 libvspec-1.0-dev libvspec-1.0-dbg
 

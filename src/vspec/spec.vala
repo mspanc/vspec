@@ -29,19 +29,19 @@ namespace VSpec {
     }
 
 
-    protected void before_each(owned BeforeFunc cb)
+    public void before_each(owned BeforeFunc cb)
     requires(this.scope != null) {
       ((!) this.scope).push_before_each_func((owned) cb);
     }
 
 
-    protected void after_each(owned AfterFunc cb)
+    public void after_each(owned AfterFunc cb)
     requires(this.scope != null) {
       ((!) this.scope).push_after_each_func((owned) cb);
     }
 
 
-    protected void describe(string name, owned ScopeFunc cb) {
+    public void describe(string name, owned ScopeFunc cb) {
       Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Entering: describe $name");
 
       ((!) this.scope).increase_depth(name, false);
@@ -71,7 +71,7 @@ namespace VSpec {
     }
 
 
-    protected void context(string name, owned ScopeFunc cb) {
+    public void context(string name, owned ScopeFunc cb) {
       Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Entering: context $name");
 
       ((!) this.scope).increase_depth(name, false);
@@ -101,7 +101,7 @@ namespace VSpec {
     }
 
 
-    protected void it(string name, owned CaseFunc cb) {
+    public void it(string name, owned CaseFunc cb) {
       Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Entering: it $name");
 
       ((!) this.scope).push_case_func(name, (owned) cb, false);
@@ -110,7 +110,7 @@ namespace VSpec {
     }
 
 
-    protected void xdescribe(string name, owned ScopeFunc cb) {
+    public void xdescribe(string name, owned ScopeFunc cb) {
       Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Entering: xdescribe $name");
 
       ((!) this.scope).increase_depth(name, true);
@@ -128,7 +128,7 @@ namespace VSpec {
     }
 
 
-    protected void xcontext(string name, owned ScopeFunc cb) {
+    public void xcontext(string name, owned ScopeFunc cb) {
       Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Entering: xcontext $name");
 
       ((!) this.scope).increase_depth(name, true);
@@ -146,7 +146,7 @@ namespace VSpec {
     }
 
 
-    protected void xit(string name, owned CaseFunc cb) {
+    public void xit(string name, owned CaseFunc cb) {
       Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Entering: xit $name");
 
       ((!) this.scope).push_case_func(name, (owned) cb, true);
@@ -155,28 +155,71 @@ namespace VSpec {
     }
 
 
-    protected void let(string name, owned LetFunc cb) {
+    public void let(string name, owned LetFunc cb) {
       Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Letting: let $name");
 
       ((!) this.scope).push_let_func(name, (owned) cb);
     }
 
 
-    protected Value? pick(string name) throws LetError {
+    public Value? pick(string name) throws LetError {
       Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Picking: $name");
 
       return ((!) this.scope).find_let_func(name)();
     }
 
 
-    protected ExpectedType pick_as<ExpectedType>(string name) throws LetError {
+    public ExpectedType pick_as<ExpectedType>(string name) throws LetError {
       Logger.debug(@"[VSpec.Spec $(((!) this.scope).get_depth())] Picking as $(typeof(ExpectedType).name()): $name");
 
       Value? value = ((!) this.scope).find_let_func(name)();
       if(value != null) {
         if(((!) value).holds(typeof(ExpectedType))) {
-          if(typeof(ExpectedType).is_a(typeof(Object))) {
-            return (ExpectedType) ((!) value).get_object();
+          if(((!)value).holds(typeof(string))) {
+            return (ExpectedType) (((!)value).get_string());
+
+          } else if(((!)value).holds(typeof(bool))) {
+            return (ExpectedType) (((!)value).get_boolean());
+
+          } else if(((!)value).holds(typeof(char))) {
+            return (ExpectedType) (((!)value).get_char());
+
+          } else if(((!)value).holds(typeof(int8))) {
+            return (ExpectedType) (((!)value).get_schar());
+
+          } else if(((!)value).holds(typeof(uchar))) {
+            return (ExpectedType) (((!)value).get_uchar());
+
+          } else if(((!)value).holds(typeof(int))) {
+            return (ExpectedType) (((!)value).get_int());
+
+          } else if(((!)value).holds(typeof(uint))) {
+            return (ExpectedType) (((!)value).get_uint());
+
+          } else if(((!)value).holds(typeof(long))) {
+            return (ExpectedType) (((!)value).get_long());
+
+          } else if(((!)value).holds(typeof(ulong))) {
+            return (ExpectedType) (((!)value).get_ulong());
+
+          } else if(((!)value).holds(typeof(int64))) {
+            return (ExpectedType) (((!)value).get_int64());
+
+          } else if(((!)value).holds(typeof(uint64))) {
+            return (ExpectedType) (((!)value).get_uint64());
+/*
+          // FIXME throws C compiler error
+          } else if(((!)value).holds(typeof(float))) {
+            return (ExpectedType) (((!)value).get_float());
+
+          } else if(((!)value).holds(typeof(double))) {
+            return (ExpectedType) (((!)value).get_double());
+*/
+          } else if(((!)value).holds(typeof(Object))) {
+            return (ExpectedType) (((!)value).get_object());
+
+          } else if(((!)value).holds(typeof(void *))) {
+            return (ExpectedType) (((!)value).get_pointer());
 
           } else {
             throw new LetError.TYPE_NOT_SUPPORTED(@"Unable to call pick_as: Type $(typeof(ExpectedType).name()) is not supported");
@@ -192,17 +235,17 @@ namespace VSpec {
     }
 
 
-    protected void @set(string name, owned LetFunc cb) {
+    public void @set(string name, owned LetFunc cb) {
       let(name, (owned) cb);
     }
 
 
-    protected Value? @get(string name) throws LetError {
+    public Value? @get(string name) throws LetError {
       return pick(name);
     }
 
 
-    protected Expectation expect(Value? value_left) {
+    public Expectation expect(Value? value_left) {
       return new Expectation(value_left);
     }
   }

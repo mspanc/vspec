@@ -8,7 +8,7 @@ Build-Depends:
  autoconf,
  autotools-dev,
  libtool,
- libglib2.0-dev (>= 2.42.1),
+ libglib2.0-dev (>= 2.40.2),
  valac (>= 0.26.1)
 Standards-Version: 3.9.6
 Homepage: https://github.com/mspanc/vspec
@@ -39,7 +39,7 @@ Package: libvspec-1.0-0
 Architecture: any
 Multi-Arch: same
 Depends: ${shlibs:Depends}, ${misc:Depends},
- libglib2.0-0 (>= 2.42.1)
+ libglib2.0-0 (>= 2.40.2)
 Suggests: pulseaudio
 Description: RSpec-like testing framework for Vala language.
  This library provides framework for RSpec-style known from Ruby but for Vala.

@@ -51,7 +51,7 @@ dnl ***************************************************************************
 dnl Dependencies
 dnl ***************************************************************************
 
-GLIB_REQUIRED=2.42.1
+GLIB_REQUIRED=2.40.2
 
 pkg_modules="glib-2.0 >= $GLIB_REQUIRED gobject-2.0 >= $GLIB_REQUIRED"
 AC_SUBST(pkg_modules)

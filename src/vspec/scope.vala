@@ -170,10 +170,11 @@ namespace VSpec {
 
 
     public void increase_depth(string name, bool pending) {
-      Logger.debug(@"[VSpec.Spec $(get_depth())] Increasing depth, pending = $pending");
+      Logger.debug(@"[VSpec.Spec $(get_depth())] Increasing depth, name = $name, pending = $pending");
       this.before_each_funcs.add(new GenericArray<BeforeFuncRef>());
       this.after_each_funcs.add(new GenericArray<AfterFuncRef>());
       this.case_funcs.add(new GenericArray<CaseFuncRef>());
+      this.let_funcs.add(new GenericArray<LetFuncRef>());
       this.names.add(name);
       this.pendings.add(pending);
     }
@@ -184,6 +185,7 @@ namespace VSpec {
       this.before_each_funcs.remove_index(this.before_each_funcs.length -1);
       this.after_each_funcs.remove_index(this.after_each_funcs.length -1);
       this.case_funcs.remove_index(this.case_funcs.length -1);
+      this.let_funcs.remove_index(this.let_funcs.length -1);
       if(this.pendings.length != 0) {
         this.pendings.remove_index(this.pendings.length -1);
       }

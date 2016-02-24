@@ -97,29 +97,14 @@ namespace VSpec {
 
   private static void on_log_message(string? log_domain, LogLevelFlags log_level, string message) {
     if(verbose) {
-      string level_string = "????";
-
-      if(LogLevelFlags.LEVEL_ERROR in log_level) {
-        level_string = "ERRO";
-
-      } else if (LogLevelFlags.LEVEL_CRITICAL in log_level) {
-        level_string = "CRIT";
-
-      } else if (LogLevelFlags.LEVEL_WARNING in log_level) {
-        level_string = "WARN";
-
-      } else if (LogLevelFlags.LEVEL_MESSAGE in log_level) {
-        level_string = "MESG";
-
-      } else if (LogLevelFlags.LEVEL_INFO in log_level) {
-        level_string = "INFO";
-
-      } else if (LogLevelFlags.LEVEL_DEBUG in log_level) {
-        level_string = "DEBG";
-      }
-
       stderr.printf("%s\n", message);
       stderr.flush();
+
+    } else {
+      if((LogLevelFlags.LEVEL_ERROR in log_level) || (LogLevelFlags.LEVEL_CRITICAL in log_level)) {
+        stderr.printf("%s\n", message);
+        stderr.flush();
+      }
     }
   }
 

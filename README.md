@@ -121,9 +121,9 @@ messages that can be useful while debugging.
 
 # Installing
 
-## Ubuntu 15.10 or 16.04
+## Ubuntu 14.04, 14.10, 15.10 or 16.04
 
-In Ubuntu 15.10 or 16.04 you can use PPA. Use one of the following command
+In Ubuntu 14.04, 14.10, 15.10 or 16.04 you can use PPA. Use one of the following command
 to install packages.
 
 ### Automatic nightly builds (may be unstable!)
@@ -134,7 +134,7 @@ to install packages.
 
 ### Stable builds
 
-Not available yet.
+Coming soon.
 
 # Compiling
 

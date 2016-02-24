@@ -58,7 +58,7 @@ namespace VSpec {
 
       for(var i = this.let_funcs.length -1; i >= 0; i--) {
         this.let_funcs[i].foreach((func_ref) => {
-          if(func_ref.name == name) {
+          if(result == null && func_ref.name == name) {
             Logger.debug(@"[VSpec.Spec $(get_depth())] Finding: let $(name) found ($(Logger.pointer((void *)func_ref.cb_ref)))");
             result = (owned) func_ref.cb_ref;
           }

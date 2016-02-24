@@ -187,8 +187,12 @@ example above.
 
 LGPL3
 
+# Support & discussions
 
-# Support & bug reporting
+Please use [vspec-users](https://groups.google.com/forum/#!forum/vspec-users) mailing list.
+
+
+# Bug reporting
 
 Please use [GitHub issues](https://github.com/mspanc/vspec/issues).
 

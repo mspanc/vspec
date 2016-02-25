@@ -25,7 +25,28 @@ namespace VSpec {
       protected override bool message_contains_value_right { get { return false; } }
 
       public override void match() throws MatchError {
-        if((this.value_left == null) != positive) {
+        bool value_left_is_null = false;
+
+        if(this.value_left == null) {
+          value_left_is_null = true;
+
+        } else if(((!)this.value_left).holds(typeof(string))) {
+          if((string?) ((!)this.value_left).get_string() == null) {
+            value_left_is_null = true;
+          }
+
+        } else if(((!)this.value_left).holds(typeof(Object))) {
+          if((Object?) ((!)this.value_left).get_object() == null) {
+            value_left_is_null = true;
+          }
+
+        } else if(((!)this.value_left).holds(typeof(void*))) {
+          if((void*) ((!)this.value_left).get_object() == null) {
+            value_left_is_null = true;
+          }
+        }
+
+        if(value_left_is_null != positive) {
           throw new MatchError.MISMATCH(get_mismatch_message());
         }
       }

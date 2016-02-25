@@ -53,7 +53,12 @@ namespace VSpec {
         return "(null)";
 
       } else if(((!)value).holds(typeof(string))) {
-        return @"(string) \"$(((!)value).get_string())\"";
+        if((string?) ((!)value).get_string() == null) {
+          return @"(string) (null)";
+
+        } else {
+          return @"(string) \"$(((!)value).get_string())\"";
+        }
 
       } else if(((!)value).holds(typeof(bool))) {
         return ((!)value).get_boolean() ? "(boolean) true" : "(boolean) false";
@@ -92,10 +97,20 @@ namespace VSpec {
         return @"(double) $(((!)value).get_double())";
 
       } else if(((!)value).holds(typeof(Object))) {
-        return @"(object) $(((!)value).get_object().get_type().name()) $("%p".printf(((!)value).get_object()))";
+        if((Object?) ((!)value).get_object() == null) {
+          return @"(object) (null)";
+
+        } else {
+          return @"(object) $(((!)value).get_object().get_type().name()) $("%p".printf(((!)value).get_object()))";
+        }
 
       } else if(((!)value).holds(typeof(void *))) {
-        return @"(pointer) $("%p".printf(((!)value).get_pointer()))";
+        if((void*) ((!)value).get_pointer() == null) {
+          return @"(pointer) (null)";
+
+        } else {
+          return @"(pointer) $("%p".printf(((!)value).get_pointer()))";
+        }
 
       } else {
         critical(@"Unable to print value: Unknown value type $(((!)value).type().name())");

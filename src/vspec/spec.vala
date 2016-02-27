@@ -17,7 +17,7 @@
  */
 
 namespace VSpec {
-  public abstract class Spec : Object {
+  public abstract class Spec<DescribedType> : Object {
     public abstract void define();
 
     private Scope?  scope = null;
@@ -242,6 +242,11 @@ namespace VSpec {
 
     public Value? @get(string name) throws LetError {
       return pick(name);
+    }
+
+
+    public Type described_type() {
+      return typeof(DescribedType);
     }
 
 

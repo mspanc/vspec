@@ -21,7 +21,7 @@ Contributions are welcome!
 ```vala
 using VSpec.Matchers;
 
-public class AbcSpec : VSpec.Spec {
+public class AbcSpec : VSpec.Spec<MyTestedClass> {
   public override void define() {
     before_each(() => {
       // Before each in that spec

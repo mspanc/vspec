@@ -28,7 +28,7 @@ libvspec_1_0_la_SOURCES = \
 
 libvspec_1_0_la_VALAFLAGS = --library libvspec-1.0 --vapi libvspec-1.0.vapi -H libvspec.h --pkg=glib-2.0 --pkg=gobject-2.0 --enable-experimental --enable-experimental-non-null
 libvspec_1_0_la_CFLAGS = $(LIBVSPEC_CFLAGS)
-libvspec_1_0_la_LDFLAGS =
+libvspec_1_0_la_LDFLAGS = -version-info $(LIBVSPEC_CURRENT):$(LIBVSPEC_REVISION):$(LIBVSPEC_AGE)
 libvspec_1_0_la_LIBADD = $(LIBVSPEC_LIBS)
 
 

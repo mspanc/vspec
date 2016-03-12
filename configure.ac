@@ -57,6 +57,24 @@ pkg_modules="glib-2.0 >= $GLIB_REQUIRED gobject-2.0 >= $GLIB_REQUIRED"
 AC_SUBST(pkg_modules)
 PKG_CHECK_MODULES(LIBVSPEC, [$pkg_modules])
 
+dnl ***************************************************************************
+dnl ABI versioning
+dnl https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
+dnl ***************************************************************************
+
+
+# Increment on interface add, remove, or change.
+LIBVSPEC_CURRENT=1
+
+# Increment on source change. Reset when CURRENT changes.
+LIBVSPEC_REVISION=0
+
+# Increment on interface addition. Reset on removal.
+LIBVSPEC_AGE=0
+
+AC_SUBST(LIBVSPEC_CURRENT)
+AC_SUBST(LIBVSPEC_REVISION)
+AC_SUBST(LIBVSPEC_AGE)
 
 dnl ***************************************************************************
 dnl Output

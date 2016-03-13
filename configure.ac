@@ -1,12 +1,15 @@
 AC_INIT([libvspec-1.0], [0.9.0], [marcin@saepia.net])
 AM_SILENT_RULES([yes])
 AC_CONFIG_HEADERS([config.h])
-AM_INIT_AUTOMAKE([1.11 subdir-objects])
+AM_INIT_AUTOMAKE([1.11 subdir-objects -Wno-portability no-define no-dist-gzip dist-xz])
 AC_PROG_CC
 AM_PROG_AR
 AM_PROG_VALAC([0.26.1])
 LT_INIT([win32-dll])
 AC_CONFIG_MACRO_DIR([m4])
+AM_MAINTAINER_MODE([enable])
+AC_PROG_INSTALL
+PKG_PROG_PKG_CONFIG(0.16)
 
 dnl ***************************************************************************
 dnl Check for OS

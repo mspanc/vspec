@@ -700,9 +700,6 @@ LIBVSPEC_REVISION
 LIBVSPEC_CURRENT
 LIBVSPEC_LIBS
 LIBVSPEC_CFLAGS
-PKG_CONFIG_LIBDIR
-PKG_CONFIG_PATH
-PKG_CONFIG
 pkg_modules
 PLATFORM_LINUX_FALSE
 PLATFORM_LINUX_TRUE
@@ -712,6 +709,12 @@ NATIVE_WIN32_FALSE
 NATIVE_WIN32_TRUE
 PLATFORM_WIN32_FALSE
 PLATFORM_WIN32_TRUE
+PKG_CONFIG_LIBDIR
+PKG_CONFIG_PATH
+PKG_CONFIG
+MAINT
+MAINTAINER_MODE_FALSE
+MAINTAINER_MODE_TRUE
 CPP
 OTOOL64
 OTOOL
@@ -838,6 +841,7 @@ enable_fast_install
 with_gnu_ld
 with_sysroot
 enable_libtool_lock
+enable_maintainer_mode
 '
       ac_precious_vars='build_alias
 host_alias
@@ -1482,6 +1486,9 @@ Optional Features:
   --enable-fast-install[=PKGS]
                           optimize for fast installation [default=yes]
   --disable-libtool-lock  avoid locking (might break parallel builds)
+  --disable-maintainer-mode
+                          disable make rules and dependencies not useful (and
+                          sometimes confusing) to the casual installer
 
 Optional Packages:
   --with-PACKAGE[=ARG]    use PACKAGE [ARG=yes]
@@ -2722,15 +2729,6 @@ fi
  PACKAGE='libvspec-1-0'
  VERSION='0.9.0'
 
-
-cat >>confdefs.h <<_ACEOF
-#define PACKAGE "$PACKAGE"
-_ACEOF
-
-
-cat >>confdefs.h <<_ACEOF
-#define VERSION "$VERSION"
-_ACEOF
 
 # Some tools Automake needs.
 
@@ -11985,74 +11983,28 @@ CC="$lt_save_CC"
 
 
 
-
-
-case $host_os in
-  *mingw*)
-    platform_win32=yes
-    native_win32=yes
-    platform_darwin=no
-    platform_linux=no
-    ;;
-  *darwin*)
-    platform_win32=no
-    native_win32=no
-    platform_darwin=yes
-    platform_linux=no
-    ;;
-  *linux*)
-    platform_win32=no
-    native_win32=no
-    platform_darwin=no
-    platform_linux=yes
-    ;;
-  pw32* | *cygwin*)
-    platform_win32=yes
-    native_win32=no
-    platform_darwin=no
-    platform_linux=no
-    ;;
-  *)
-    as_fn_error $? "OS $host_os is currently not supported" "$LINENO" 5
-    ;;
-esac
- if test x"$platform_win32" = "xyes"; then
-  PLATFORM_WIN32_TRUE=
-  PLATFORM_WIN32_FALSE='#'
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking whether to enable maintainer-specific portions of Makefiles" >&5
+$as_echo_n "checking whether to enable maintainer-specific portions of Makefiles... " >&6; }
+    # Check whether --enable-maintainer-mode was given.
+if test "${enable_maintainer_mode+set}" = set; then :
+  enableval=$enable_maintainer_mode; USE_MAINTAINER_MODE=$enableval
 else
-  PLATFORM_WIN32_TRUE='#'
-  PLATFORM_WIN32_FALSE=
+  USE_MAINTAINER_MODE=yes
 fi
 
- if test x"$native_win32" = "xyes"; then
-  NATIVE_WIN32_TRUE=
-  NATIVE_WIN32_FALSE='#'
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $USE_MAINTAINER_MODE" >&5
+$as_echo "$USE_MAINTAINER_MODE" >&6; }
+   if test $USE_MAINTAINER_MODE = yes; then
+  MAINTAINER_MODE_TRUE=
+  MAINTAINER_MODE_FALSE='#'
 else
-  NATIVE_WIN32_TRUE='#'
-  NATIVE_WIN32_FALSE=
+  MAINTAINER_MODE_TRUE='#'
+  MAINTAINER_MODE_FALSE=
 fi
 
- if test x"$platform_darwin" = "xyes"; then
-  PLATFORM_DARWIN_TRUE=
-  PLATFORM_DARWIN_FALSE='#'
-else
-  PLATFORM_DARWIN_TRUE='#'
-  PLATFORM_DARWIN_FALSE=
-fi
-
- if test x"$platform_linux" = "xyes"; then
-  PLATFORM_LINUX_TRUE=
-  PLATFORM_LINUX_FALSE='#'
-else
-  PLATFORM_LINUX_TRUE='#'
-  PLATFORM_LINUX_FALSE=
-fi
+  MAINT=$MAINTAINER_MODE_TRUE
 
 
-
-GLIB_REQUIRED=2.40.2
-
-pkg_modules="glib-2.0 >= $GLIB_REQUIRED gobject-2.0 >= $GLIB_REQUIRED"
 
 
 
@@ -12162,7 +12114,7 @@ fi
 
 fi
 if test -n "$PKG_CONFIG"; then
-	_pkg_min_version=0.9.0
+	_pkg_min_version=0.16
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking pkg-config is at least version $_pkg_min_version" >&5
 $as_echo_n "checking pkg-config is at least version $_pkg_min_version... " >&6; }
 	if $PKG_CONFIG --atleast-pkgconfig-version $_pkg_min_version; then
@@ -12174,6 +12126,76 @@ $as_echo "no" >&6; }
 		PKG_CONFIG=""
 	fi
 fi
+
+
+
+case $host_os in
+  *mingw*)
+    platform_win32=yes
+    native_win32=yes
+    platform_darwin=no
+    platform_linux=no
+    ;;
+  *darwin*)
+    platform_win32=no
+    native_win32=no
+    platform_darwin=yes
+    platform_linux=no
+    ;;
+  *linux*)
+    platform_win32=no
+    native_win32=no
+    platform_darwin=no
+    platform_linux=yes
+    ;;
+  pw32* | *cygwin*)
+    platform_win32=yes
+    native_win32=no
+    platform_darwin=no
+    platform_linux=no
+    ;;
+  *)
+    as_fn_error $? "OS $host_os is currently not supported" "$LINENO" 5
+    ;;
+esac
+ if test x"$platform_win32" = "xyes"; then
+  PLATFORM_WIN32_TRUE=
+  PLATFORM_WIN32_FALSE='#'
+else
+  PLATFORM_WIN32_TRUE='#'
+  PLATFORM_WIN32_FALSE=
+fi
+
+ if test x"$native_win32" = "xyes"; then
+  NATIVE_WIN32_TRUE=
+  NATIVE_WIN32_FALSE='#'
+else
+  NATIVE_WIN32_TRUE='#'
+  NATIVE_WIN32_FALSE=
+fi
+
+ if test x"$platform_darwin" = "xyes"; then
+  PLATFORM_DARWIN_TRUE=
+  PLATFORM_DARWIN_FALSE='#'
+else
+  PLATFORM_DARWIN_TRUE='#'
+  PLATFORM_DARWIN_FALSE=
+fi
+
+ if test x"$platform_linux" = "xyes"; then
+  PLATFORM_LINUX_TRUE=
+  PLATFORM_LINUX_FALSE='#'
+else
+  PLATFORM_LINUX_TRUE='#'
+  PLATFORM_LINUX_FALSE=
+fi
+
+
+
+GLIB_REQUIRED=2.40.2
+
+pkg_modules="glib-2.0 >= $GLIB_REQUIRED gobject-2.0 >= $GLIB_REQUIRED"
+
 
 pkg_failed=no
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for LIBVSPEC" >&5
@@ -12415,6 +12437,10 @@ Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${am__fastdepCC_TRUE}" && test -z "${am__fastdepCC_FALSE}"; then
   as_fn_error $? "conditional \"am__fastdepCC\" was never defined.
+Usually this means the macro was only invoked conditionally." "$LINENO" 5
+fi
+if test -z "${MAINTAINER_MODE_TRUE}" && test -z "${MAINTAINER_MODE_FALSE}"; then
+  as_fn_error $? "conditional \"MAINTAINER_MODE\" was never defined.
 Usually this means the macro was only invoked conditionally." "$LINENO" 5
 fi
 if test -z "${PLATFORM_WIN32_TRUE}" && test -z "${PLATFORM_WIN32_FALSE}"; then

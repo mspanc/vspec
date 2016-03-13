@@ -1,4 +1,23 @@
-AC_INIT([libvspec-1.0], [0.9.0], [marcin@saepia.net])
+dnl ***************************************************************************
+dnl Version
+dnl ***************************************************************************
+
+m4_define([libvspec_major_version], [0])
+m4_define([libvspec_minor_version], [9])
+m4_define([libvspec_micro_version], [0])
+
+m4_define([libvspec_version], [libvspec_major_version.libvspec_minor_version.libvspec_micro_version])
+
+
+dnl ***************************************************************************
+dnl Initialization
+dnl ***************************************************************************
+
+AC_INIT([libvspec-1.0],
+  [libvspec_version],
+  [https://github.com/mspanc/vspec/issues],
+  [libvspec-1.0],
+  [https://github.com/mspanc/vspec])
 AM_SILENT_RULES([yes])
 AC_CONFIG_HEADERS([config.h])
 AM_INIT_AUTOMAKE([1.11 subdir-objects -Wno-portability no-define no-dist-gzip dist-xz])
@@ -10,6 +29,9 @@ AC_CONFIG_MACRO_DIR([m4])
 AM_MAINTAINER_MODE([enable])
 AC_PROG_INSTALL
 PKG_PROG_PKG_CONFIG(0.16)
+
+ACLOCAL="$ACLOCAL $ACLOCAL_FLAGS"
+
 
 dnl ***************************************************************************
 dnl Check for OS
@@ -60,24 +82,83 @@ pkg_modules="glib-2.0 >= $GLIB_REQUIRED gobject-2.0 >= $GLIB_REQUIRED"
 AC_SUBST(pkg_modules)
 PKG_CHECK_MODULES(LIBVSPEC, [$pkg_modules])
 
+
 dnl ***************************************************************************
-dnl ABI versioning
-dnl https://www.gnu.org/software/libtool/manual/html_node/Updating-version-info.html
+dnl Visibility
 dnl ***************************************************************************
 
+LIBVSPEC_HIDDEN_VISIBILITY_CFLAGS=""
+case "$host" in
+  *-*-mingw*)
+    dnl on mingw32 we do -fvisibility=hidden and __declspec(dllexport)
+    AC_DEFINE([_LIBVSPEC_EXTERN], [__attribute__((visibility("default"))) __declspec(dllexport) extern],
+              [defines how to decorate public symbols while building])
+    CFLAGS="${CFLAGS} -fvisibility=hidden"
+    ;;
+  *)
+    dnl on other compilers, check if we can do -fvisibility=hidden
+    SAVED_CFLAGS="${CFLAGS}"
+    CFLAGS="-fvisibility=hidden"
+    AC_MSG_CHECKING([for -fvisibility=hidden compiler flag])
+    AC_TRY_COMPILE([], [int main (void) { return 0; }],
+                   AC_MSG_RESULT(yes)
+                   enable_fvisibility_hidden=yes,
+                   AC_MSG_RESULT(no)
+                   enable_fvisibility_hidden=no)
+    CFLAGS="${SAVED_CFLAGS}"
+
+    AS_IF([test "${enable_fvisibility_hidden}" = "yes"], [
+      AC_DEFINE([_LIBVSPEC_EXTERN], [__attribute__((visibility("default"))) extern],
+                [defines how to decorate public symbols while building])
+      LIBVSPEC_HIDDEN_VISIBILITY_CFLAGS="-fvisibility=hidden"
+    ])
+    ;;
+esac
+AC_SUBST(LIBVSPEC_HIDDEN_VISIBILITY_CFLAGS)
+
+
+dnl ***************************************************************************
+dnl Linking
+dnl ***************************************************************************
 
 # Increment on interface add, remove, or change.
-LIBVSPEC_CURRENT=1
+LIBVSPEC_LT_CURRENT=1
 
 # Increment on source change. Reset when CURRENT changes.
-LIBVSPEC_REVISION=0
+LIBVSPEC_LT_REVISION=0
 
 # Increment on interface addition. Reset on removal.
-LIBVSPEC_AGE=0
+LIBVSPEC_LT_AGE=0
 
-AC_SUBST(LIBVSPEC_CURRENT)
-AC_SUBST(LIBVSPEC_REVISION)
-AC_SUBST(LIBVSPEC_AGE)
+LIBVSPEC_LT_VERSION="$LIBVSPEC_LT_CURRENT:$LIBVSPEC_LT_REVISION:$LIBVSPEC_LT_AGE"
+LIBVSPEC_LT_LDFLAGS="-version-info $LIBVSPEC_LT_VERSION"
+
+# Check for -Bsymbolic-functions to avoid intra-library PLT jumps
+AC_ARG_ENABLE([Bsymbolic],
+              [AS_HELP_STRING([--disable-Bsymbolic],
+                              [Avoid linking with -Bsymbolic])],
+              [],
+              [
+                saved_LDFLAGS="${LDFLAGS}"
+                AC_MSG_CHECKING([for -Bsymbolic-functions linker flag])
+                LDFLAGS=-Wl,-Bsymbolic-functions
+                AC_TRY_LINK([], [int main (void) { return 0; }],
+                            [
+                              AC_MSG_RESULT([yes])
+                              enable_Bsymbolic=yes
+                            ],
+                            [
+                              AC_MSG_RESULT([no])
+                              enable_Bsymbolic=no
+                            ])
+                LDFLAGS="${saved_LDFLAGS}"
+              ])
+
+AS_IF([test "x$enable_Bsymbolic" = "xyes"], [LIBVSPEC_LINK_FLAGS=-Wl[,]-Bsymbolic-functions])
+LIBVSPEC_LT_LDFLAGS="$LIBVSPEC_LT_LDFLAGS $LIBVSPEC_LINK_FLAGS"
+
+AC_SUBST(LIBVSPEC_LT_LDFLAGS)
+
 
 dnl ***************************************************************************
 dnl Output
@@ -87,3 +168,16 @@ AC_OUTPUT([
 Makefile
 src/Makefile
 src/libvspec-1.0.pc])
+
+
+dnl ***************************************************************************
+dnl Summary
+dnl ***************************************************************************
+
+echo ""
+echo " libvspec - $VERSION"
+echo ""
+echo " • Prefix: ${prefix}"
+echo ""
+echo " • Compiler flags: ${CFLAGS} ${MAINTAINER_CFLAGS}"
+echo ""

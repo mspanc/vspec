@@ -279,11 +279,10 @@ LDFLAGS = @LDFLAGS@
 LIBOBJS = @LIBOBJS@
 LIBS = @LIBS@
 LIBTOOL = @LIBTOOL@
-LIBVSPEC_AGE = @LIBVSPEC_AGE@
 LIBVSPEC_CFLAGS = @LIBVSPEC_CFLAGS@
-LIBVSPEC_CURRENT = @LIBVSPEC_CURRENT@
+LIBVSPEC_HIDDEN_VISIBILITY_CFLAGS = @LIBVSPEC_HIDDEN_VISIBILITY_CFLAGS@
 LIBVSPEC_LIBS = @LIBVSPEC_LIBS@
-LIBVSPEC_REVISION = @LIBVSPEC_REVISION@
+LIBVSPEC_LT_LDFLAGS = @LIBVSPEC_LT_LDFLAGS@
 LIPO = @LIPO@
 LN_S = @LN_S@
 LTLIBOBJS = @LTLIBOBJS@
@@ -368,16 +367,6 @@ target_alias = @target_alias@
 top_build_prefix = @top_build_prefix@
 top_builddir = @top_builddir@
 top_srcdir = @top_srcdir@
-AM_CPPFLAGS = \
-	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\" \
-	-DPACKAGE_SRC_DIR=\""$(srcdir)"\" \
-	-DPACKAGE_DATA_DIR=\""$(pkgdatadir)"\" \
-	$(LIBVSPEC_CFLAGS)
-
-AM_CFLAGS = \
-	 -Wall\
-	 -g
-
 lib_LTLIBRARIES = libvspec-1.0.la
 libvspec_1_0_la_SOURCES = \
   vspec.vala \
@@ -395,10 +384,16 @@ libvspec_1_0_la_SOURCES = \
 	vspec/matchers/be_false.vala \
 	vspec/matchers/be_instance_of.vala
 
+libvspec_1_0_la_CPPFLAGS = \
+	-DPREFIX=\""$(prefix)"\" \
+	-DLIBDIR=\""$(libdir)"\" \
+	-DG_LOG_DOMAIN=\"vspec\" \
+	-I$(top_srcdir) \
+	-I$(top_builddir)
+
 libvspec_1_0_la_VALAFLAGS = --library libvspec-1.0 --vapi libvspec-1.0.vapi -H libvspec.h --pkg=glib-2.0 --pkg=gobject-2.0 --enable-experimental --enable-experimental-non-null
-libvspec_1_0_la_CFLAGS = $(LIBVSPEC_CFLAGS)
-libvspec_1_0_la_LDFLAGS = -version-info \
-	$(LIBVSPEC_CURRENT):$(LIBVSPEC_REVISION):$(LIBVSPEC_AGE) \
+libvspec_1_0_la_CFLAGS = $(LIBVSPEC_CFLAGS) $(LIBVSPEC_HIDDEN_VISIBILITY_CFLAGS)
+libvspec_1_0_la_LDFLAGS = $(LIBVSPEC_LT_LDFLAGS) -export-dynamic \
 	$(am__append_1) $(am__append_2)
 libvspec_1_0_la_LIBADD = $(LIBVSPEC_LIBS)
 
@@ -585,102 +580,102 @@ distclean-compile:
 @am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LTCOMPILE) -c -o $@ $<
 
 libvspec_1_0_la-vspec.lo: vspec.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT libvspec_1_0_la-vspec.lo -MD -MP -MF $(DEPDIR)/libvspec_1_0_la-vspec.Tpo -c -o libvspec_1_0_la-vspec.lo `test -f 'vspec.c' || echo '$(srcdir)/'`vspec.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT libvspec_1_0_la-vspec.lo -MD -MP -MF $(DEPDIR)/libvspec_1_0_la-vspec.Tpo -c -o libvspec_1_0_la-vspec.lo `test -f 'vspec.c' || echo '$(srcdir)/'`vspec.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) $(DEPDIR)/libvspec_1_0_la-vspec.Tpo $(DEPDIR)/libvspec_1_0_la-vspec.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec.c' object='libvspec_1_0_la-vspec.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o libvspec_1_0_la-vspec.lo `test -f 'vspec.c' || echo '$(srcdir)/'`vspec.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o libvspec_1_0_la-vspec.lo `test -f 'vspec.c' || echo '$(srcdir)/'`vspec.c
 
 vspec/libvspec_1_0_la-spec.lo: vspec/spec.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/libvspec_1_0_la-spec.lo -MD -MP -MF vspec/$(DEPDIR)/libvspec_1_0_la-spec.Tpo -c -o vspec/libvspec_1_0_la-spec.lo `test -f 'vspec/spec.c' || echo '$(srcdir)/'`vspec/spec.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/libvspec_1_0_la-spec.lo -MD -MP -MF vspec/$(DEPDIR)/libvspec_1_0_la-spec.Tpo -c -o vspec/libvspec_1_0_la-spec.lo `test -f 'vspec/spec.c' || echo '$(srcdir)/'`vspec/spec.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) vspec/$(DEPDIR)/libvspec_1_0_la-spec.Tpo vspec/$(DEPDIR)/libvspec_1_0_la-spec.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec/spec.c' object='vspec/libvspec_1_0_la-spec.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/libvspec_1_0_la-spec.lo `test -f 'vspec/spec.c' || echo '$(srcdir)/'`vspec/spec.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/libvspec_1_0_la-spec.lo `test -f 'vspec/spec.c' || echo '$(srcdir)/'`vspec/spec.c
 
 vspec/libvspec_1_0_la-report.lo: vspec/report.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/libvspec_1_0_la-report.lo -MD -MP -MF vspec/$(DEPDIR)/libvspec_1_0_la-report.Tpo -c -o vspec/libvspec_1_0_la-report.lo `test -f 'vspec/report.c' || echo '$(srcdir)/'`vspec/report.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/libvspec_1_0_la-report.lo -MD -MP -MF vspec/$(DEPDIR)/libvspec_1_0_la-report.Tpo -c -o vspec/libvspec_1_0_la-report.lo `test -f 'vspec/report.c' || echo '$(srcdir)/'`vspec/report.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) vspec/$(DEPDIR)/libvspec_1_0_la-report.Tpo vspec/$(DEPDIR)/libvspec_1_0_la-report.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec/report.c' object='vspec/libvspec_1_0_la-report.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/libvspec_1_0_la-report.lo `test -f 'vspec/report.c' || echo '$(srcdir)/'`vspec/report.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/libvspec_1_0_la-report.lo `test -f 'vspec/report.c' || echo '$(srcdir)/'`vspec/report.c
 
 vspec/libvspec_1_0_la-logger.lo: vspec/logger.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/libvspec_1_0_la-logger.lo -MD -MP -MF vspec/$(DEPDIR)/libvspec_1_0_la-logger.Tpo -c -o vspec/libvspec_1_0_la-logger.lo `test -f 'vspec/logger.c' || echo '$(srcdir)/'`vspec/logger.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/libvspec_1_0_la-logger.lo -MD -MP -MF vspec/$(DEPDIR)/libvspec_1_0_la-logger.Tpo -c -o vspec/libvspec_1_0_la-logger.lo `test -f 'vspec/logger.c' || echo '$(srcdir)/'`vspec/logger.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) vspec/$(DEPDIR)/libvspec_1_0_la-logger.Tpo vspec/$(DEPDIR)/libvspec_1_0_la-logger.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec/logger.c' object='vspec/libvspec_1_0_la-logger.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/libvspec_1_0_la-logger.lo `test -f 'vspec/logger.c' || echo '$(srcdir)/'`vspec/logger.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/libvspec_1_0_la-logger.lo `test -f 'vspec/logger.c' || echo '$(srcdir)/'`vspec/logger.c
 
 vspec/libvspec_1_0_la-scope.lo: vspec/scope.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/libvspec_1_0_la-scope.lo -MD -MP -MF vspec/$(DEPDIR)/libvspec_1_0_la-scope.Tpo -c -o vspec/libvspec_1_0_la-scope.lo `test -f 'vspec/scope.c' || echo '$(srcdir)/'`vspec/scope.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/libvspec_1_0_la-scope.lo -MD -MP -MF vspec/$(DEPDIR)/libvspec_1_0_la-scope.Tpo -c -o vspec/libvspec_1_0_la-scope.lo `test -f 'vspec/scope.c' || echo '$(srcdir)/'`vspec/scope.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) vspec/$(DEPDIR)/libvspec_1_0_la-scope.Tpo vspec/$(DEPDIR)/libvspec_1_0_la-scope.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec/scope.c' object='vspec/libvspec_1_0_la-scope.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/libvspec_1_0_la-scope.lo `test -f 'vspec/scope.c' || echo '$(srcdir)/'`vspec/scope.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/libvspec_1_0_la-scope.lo `test -f 'vspec/scope.c' || echo '$(srcdir)/'`vspec/scope.c
 
 vspec/libvspec_1_0_la-expectation.lo: vspec/expectation.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/libvspec_1_0_la-expectation.lo -MD -MP -MF vspec/$(DEPDIR)/libvspec_1_0_la-expectation.Tpo -c -o vspec/libvspec_1_0_la-expectation.lo `test -f 'vspec/expectation.c' || echo '$(srcdir)/'`vspec/expectation.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/libvspec_1_0_la-expectation.lo -MD -MP -MF vspec/$(DEPDIR)/libvspec_1_0_la-expectation.Tpo -c -o vspec/libvspec_1_0_la-expectation.lo `test -f 'vspec/expectation.c' || echo '$(srcdir)/'`vspec/expectation.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) vspec/$(DEPDIR)/libvspec_1_0_la-expectation.Tpo vspec/$(DEPDIR)/libvspec_1_0_la-expectation.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec/expectation.c' object='vspec/libvspec_1_0_la-expectation.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/libvspec_1_0_la-expectation.lo `test -f 'vspec/expectation.c' || echo '$(srcdir)/'`vspec/expectation.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/libvspec_1_0_la-expectation.lo `test -f 'vspec/expectation.c' || echo '$(srcdir)/'`vspec/expectation.c
 
 vspec/libvspec_1_0_la-match.lo: vspec/match.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/libvspec_1_0_la-match.lo -MD -MP -MF vspec/$(DEPDIR)/libvspec_1_0_la-match.Tpo -c -o vspec/libvspec_1_0_la-match.lo `test -f 'vspec/match.c' || echo '$(srcdir)/'`vspec/match.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/libvspec_1_0_la-match.lo -MD -MP -MF vspec/$(DEPDIR)/libvspec_1_0_la-match.Tpo -c -o vspec/libvspec_1_0_la-match.lo `test -f 'vspec/match.c' || echo '$(srcdir)/'`vspec/match.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) vspec/$(DEPDIR)/libvspec_1_0_la-match.Tpo vspec/$(DEPDIR)/libvspec_1_0_la-match.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec/match.c' object='vspec/libvspec_1_0_la-match.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/libvspec_1_0_la-match.lo `test -f 'vspec/match.c' || echo '$(srcdir)/'`vspec/match.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/libvspec_1_0_la-match.lo `test -f 'vspec/match.c' || echo '$(srcdir)/'`vspec/match.c
 
 vspec/libvspec_1_0_la-matcher.lo: vspec/matcher.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/libvspec_1_0_la-matcher.lo -MD -MP -MF vspec/$(DEPDIR)/libvspec_1_0_la-matcher.Tpo -c -o vspec/libvspec_1_0_la-matcher.lo `test -f 'vspec/matcher.c' || echo '$(srcdir)/'`vspec/matcher.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/libvspec_1_0_la-matcher.lo -MD -MP -MF vspec/$(DEPDIR)/libvspec_1_0_la-matcher.Tpo -c -o vspec/libvspec_1_0_la-matcher.lo `test -f 'vspec/matcher.c' || echo '$(srcdir)/'`vspec/matcher.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) vspec/$(DEPDIR)/libvspec_1_0_la-matcher.Tpo vspec/$(DEPDIR)/libvspec_1_0_la-matcher.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec/matcher.c' object='vspec/libvspec_1_0_la-matcher.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/libvspec_1_0_la-matcher.lo `test -f 'vspec/matcher.c' || echo '$(srcdir)/'`vspec/matcher.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/libvspec_1_0_la-matcher.lo `test -f 'vspec/matcher.c' || echo '$(srcdir)/'`vspec/matcher.c
 
 vspec/matchers/libvspec_1_0_la-eq.lo: vspec/matchers/eq.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/matchers/libvspec_1_0_la-eq.lo -MD -MP -MF vspec/matchers/$(DEPDIR)/libvspec_1_0_la-eq.Tpo -c -o vspec/matchers/libvspec_1_0_la-eq.lo `test -f 'vspec/matchers/eq.c' || echo '$(srcdir)/'`vspec/matchers/eq.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/matchers/libvspec_1_0_la-eq.lo -MD -MP -MF vspec/matchers/$(DEPDIR)/libvspec_1_0_la-eq.Tpo -c -o vspec/matchers/libvspec_1_0_la-eq.lo `test -f 'vspec/matchers/eq.c' || echo '$(srcdir)/'`vspec/matchers/eq.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) vspec/matchers/$(DEPDIR)/libvspec_1_0_la-eq.Tpo vspec/matchers/$(DEPDIR)/libvspec_1_0_la-eq.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec/matchers/eq.c' object='vspec/matchers/libvspec_1_0_la-eq.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/matchers/libvspec_1_0_la-eq.lo `test -f 'vspec/matchers/eq.c' || echo '$(srcdir)/'`vspec/matchers/eq.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/matchers/libvspec_1_0_la-eq.lo `test -f 'vspec/matchers/eq.c' || echo '$(srcdir)/'`vspec/matchers/eq.c
 
 vspec/matchers/libvspec_1_0_la-be.lo: vspec/matchers/be.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/matchers/libvspec_1_0_la-be.lo -MD -MP -MF vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be.Tpo -c -o vspec/matchers/libvspec_1_0_la-be.lo `test -f 'vspec/matchers/be.c' || echo '$(srcdir)/'`vspec/matchers/be.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/matchers/libvspec_1_0_la-be.lo -MD -MP -MF vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be.Tpo -c -o vspec/matchers/libvspec_1_0_la-be.lo `test -f 'vspec/matchers/be.c' || echo '$(srcdir)/'`vspec/matchers/be.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be.Tpo vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec/matchers/be.c' object='vspec/matchers/libvspec_1_0_la-be.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/matchers/libvspec_1_0_la-be.lo `test -f 'vspec/matchers/be.c' || echo '$(srcdir)/'`vspec/matchers/be.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/matchers/libvspec_1_0_la-be.lo `test -f 'vspec/matchers/be.c' || echo '$(srcdir)/'`vspec/matchers/be.c
 
 vspec/matchers/libvspec_1_0_la-be_null.lo: vspec/matchers/be_null.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/matchers/libvspec_1_0_la-be_null.lo -MD -MP -MF vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_null.Tpo -c -o vspec/matchers/libvspec_1_0_la-be_null.lo `test -f 'vspec/matchers/be_null.c' || echo '$(srcdir)/'`vspec/matchers/be_null.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/matchers/libvspec_1_0_la-be_null.lo -MD -MP -MF vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_null.Tpo -c -o vspec/matchers/libvspec_1_0_la-be_null.lo `test -f 'vspec/matchers/be_null.c' || echo '$(srcdir)/'`vspec/matchers/be_null.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_null.Tpo vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_null.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec/matchers/be_null.c' object='vspec/matchers/libvspec_1_0_la-be_null.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/matchers/libvspec_1_0_la-be_null.lo `test -f 'vspec/matchers/be_null.c' || echo '$(srcdir)/'`vspec/matchers/be_null.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/matchers/libvspec_1_0_la-be_null.lo `test -f 'vspec/matchers/be_null.c' || echo '$(srcdir)/'`vspec/matchers/be_null.c
 
 vspec/matchers/libvspec_1_0_la-be_true.lo: vspec/matchers/be_true.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/matchers/libvspec_1_0_la-be_true.lo -MD -MP -MF vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_true.Tpo -c -o vspec/matchers/libvspec_1_0_la-be_true.lo `test -f 'vspec/matchers/be_true.c' || echo '$(srcdir)/'`vspec/matchers/be_true.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/matchers/libvspec_1_0_la-be_true.lo -MD -MP -MF vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_true.Tpo -c -o vspec/matchers/libvspec_1_0_la-be_true.lo `test -f 'vspec/matchers/be_true.c' || echo '$(srcdir)/'`vspec/matchers/be_true.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_true.Tpo vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_true.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec/matchers/be_true.c' object='vspec/matchers/libvspec_1_0_la-be_true.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/matchers/libvspec_1_0_la-be_true.lo `test -f 'vspec/matchers/be_true.c' || echo '$(srcdir)/'`vspec/matchers/be_true.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/matchers/libvspec_1_0_la-be_true.lo `test -f 'vspec/matchers/be_true.c' || echo '$(srcdir)/'`vspec/matchers/be_true.c
 
 vspec/matchers/libvspec_1_0_la-be_false.lo: vspec/matchers/be_false.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/matchers/libvspec_1_0_la-be_false.lo -MD -MP -MF vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_false.Tpo -c -o vspec/matchers/libvspec_1_0_la-be_false.lo `test -f 'vspec/matchers/be_false.c' || echo '$(srcdir)/'`vspec/matchers/be_false.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/matchers/libvspec_1_0_la-be_false.lo -MD -MP -MF vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_false.Tpo -c -o vspec/matchers/libvspec_1_0_la-be_false.lo `test -f 'vspec/matchers/be_false.c' || echo '$(srcdir)/'`vspec/matchers/be_false.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_false.Tpo vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_false.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec/matchers/be_false.c' object='vspec/matchers/libvspec_1_0_la-be_false.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/matchers/libvspec_1_0_la-be_false.lo `test -f 'vspec/matchers/be_false.c' || echo '$(srcdir)/'`vspec/matchers/be_false.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/matchers/libvspec_1_0_la-be_false.lo `test -f 'vspec/matchers/be_false.c' || echo '$(srcdir)/'`vspec/matchers/be_false.c
 
 vspec/matchers/libvspec_1_0_la-be_instance_of.lo: vspec/matchers/be_instance_of.c
-@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/matchers/libvspec_1_0_la-be_instance_of.lo -MD -MP -MF vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_instance_of.Tpo -c -o vspec/matchers/libvspec_1_0_la-be_instance_of.lo `test -f 'vspec/matchers/be_instance_of.c' || echo '$(srcdir)/'`vspec/matchers/be_instance_of.c
+@am__fastdepCC_TRUE@	$(AM_V_CC)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -MT vspec/matchers/libvspec_1_0_la-be_instance_of.lo -MD -MP -MF vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_instance_of.Tpo -c -o vspec/matchers/libvspec_1_0_la-be_instance_of.lo `test -f 'vspec/matchers/be_instance_of.c' || echo '$(srcdir)/'`vspec/matchers/be_instance_of.c
 @am__fastdepCC_TRUE@	$(AM_V_at)$(am__mv) vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_instance_of.Tpo vspec/matchers/$(DEPDIR)/libvspec_1_0_la-be_instance_of.Plo
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	$(AM_V_CC)source='vspec/matchers/be_instance_of.c' object='vspec/matchers/libvspec_1_0_la-be_instance_of.lo' libtool=yes @AMDEPBACKSLASH@
 @AMDEP_TRUE@@am__fastdepCC_FALSE@	DEPDIR=$(DEPDIR) $(CCDEPMODE) $(depcomp) @AMDEPBACKSLASH@
-@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/matchers/libvspec_1_0_la-be_instance_of.lo `test -f 'vspec/matchers/be_instance_of.c' || echo '$(srcdir)/'`vspec/matchers/be_instance_of.c
+@am__fastdepCC_FALSE@	$(AM_V_CC@am__nodep@)$(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=compile $(CC) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) $(libvspec_1_0_la_CPPFLAGS) $(CPPFLAGS) $(libvspec_1_0_la_CFLAGS) $(CFLAGS) -c -o vspec/matchers/libvspec_1_0_la-be_instance_of.lo `test -f 'vspec/matchers/be_instance_of.c' || echo '$(srcdir)/'`vspec/matchers/be_instance_of.c
 $(srcdir)/vspec.c: $(srcdir)/libvspec_1_0_la_vala.stamp
 	@if test -f $@; then :; else rm -f $(srcdir)/libvspec_1_0_la_vala.stamp; fi
 	@if test -f $@; then :; else \

@@ -23,7 +23,7 @@ libvspec_1_0_la_CPPFLAGS = \
 	-I$(top_srcdir) \
 	-I$(top_builddir)
 libvspec_1_0_la_VALAFLAGS = --library libvspec-1.0 --vapi libvspec-1.0.vapi -H libvspec.h --pkg=glib-2.0 --pkg=gobject-2.0 --enable-experimental --enable-experimental-non-null
-libvspec_1_0_la_CFLAGS = $(LIBVSPEC_CFLAGS) $(LIBVSPEC_HIDDEN_VISIBILITY_CFLAGS)
+libvspec_1_0_la_CFLAGS = $(LIBVSPEC_CFLAGS)
 libvspec_1_0_la_LDFLAGS = $(LIBVSPEC_LT_LDFLAGS) -export-dynamic
 libvspec_1_0_la_LIBADD = $(LIBVSPEC_LIBS)
 

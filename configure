@@ -696,7 +696,6 @@ am__EXEEXT_TRUE
 LTLIBOBJS
 LIBOBJS
 LIBVSPEC_LT_LDFLAGS
-LIBVSPEC_HIDDEN_VISIBILITY_CFLAGS
 LIBVSPEC_LIBS
 LIBVSPEC_CFLAGS
 pkg_modules
@@ -8671,6 +8670,10 @@ _lt_linker_boilerplate=`cat conftest.err`
 $RM -r conftest*
 
 
+## CAVEAT EMPTOR:
+## There is no encapsulation within the following macros, do not change
+## the running order or otherwise move them around unless you know exactly
+## what you are doing...
 if test -n "$compiler"; then
 
 lt_prog_compiler_no_builtin_flag=
@@ -12768,56 +12771,6 @@ else
 $as_echo "yes" >&6; }
 
 fi
-
-
-
-LIBVSPEC_HIDDEN_VISIBILITY_CFLAGS=""
-case "$host" in
-  *-*-mingw*)
-
-$as_echo "#define _LIBVSPEC_EXTERN __attribute__((visibility(\"default\"))) __declspec(dllexport) extern" >>confdefs.h
-
-    CFLAGS="${CFLAGS} -fvisibility=hidden"
-    ;;
-  *)
-        SAVED_CFLAGS="${CFLAGS}"
-    CFLAGS="-fvisibility=hidden"
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for -fvisibility=hidden compiler flag" >&5
-$as_echo_n "checking for -fvisibility=hidden compiler flag... " >&6; }
-    cat confdefs.h - <<_ACEOF >conftest.$ac_ext
-/* end confdefs.h.  */
-
-int
-main ()
-{
-int main (void) { return 0; }
-  ;
-  return 0;
-}
-_ACEOF
-if ac_fn_c_try_compile "$LINENO"; then :
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: yes" >&5
-$as_echo "yes" >&6; }
-                   enable_fvisibility_hidden=yes
-else
-  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
-$as_echo "no" >&6; }
-                   enable_fvisibility_hidden=no
-fi
-rm -f core conftest.err conftest.$ac_objext conftest.$ac_ext
-    CFLAGS="${SAVED_CFLAGS}"
-
-    if test "${enable_fvisibility_hidden}" = "yes"; then :
-
-
-$as_echo "#define _LIBVSPEC_EXTERN __attribute__((visibility(\"default\"))) extern" >>confdefs.h
-
-      LIBVSPEC_HIDDEN_VISIBILITY_CFLAGS="-fvisibility=hidden"
-
-fi
-    ;;
-esac
-
 
 
 

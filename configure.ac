@@ -88,7 +88,7 @@ dnl Linking
 dnl ***************************************************************************
 
 # Increment on interface add, remove, or change.
-LIBVSPEC_LT_CURRENT=1
+LIBVSPEC_LT_CURRENT=0
 
 # Increment on source change. Reset when CURRENT changes.
 LIBVSPEC_LT_REVISION=0
